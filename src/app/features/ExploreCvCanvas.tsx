@@ -12,6 +12,14 @@ type Player = {
   dy: number;
 };
 
+type CollisionObject = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  colour: string;
+};
+
 export const ExploreCvCanvas: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -64,21 +72,80 @@ export const ExploreCvCanvas: React.FC = () => {
     const book = new Image();
     book.src = "http://localhost:3000/book-item/11a-blank.gif";
 
-    const collisionHouse = {
+    const aliHouse: CollisionObject = {
       x: 114,
       y: 85,
       width: 112,
       height: 85,
-      colour: "rgba(255, 0, 0, 0)",
+      colour: "transparent",
     };
 
-    const collisionHouse2 = {
+    const alexHouse: CollisionObject = {
       x: 341,
       y: 85,
       width: 112,
       height: 85,
-      colour: "red",
+      colour: "transparent",
     };
+
+    const oaksHouse: CollisionObject = {
+      x: 290,
+      y: 225,
+      width: 155,
+      height: 110,
+      colour: "transparent",
+    };
+
+    const fence1: CollisionObject = {
+      x: 115,
+      y: 256,
+      width: 112,
+      height: 25,
+      colour: "transparent",
+    };
+
+    const fence2: CollisionObject = {
+      x: 285,
+      y: 370,
+      width: 170,
+      height: 25,
+      colour: "transparent",
+    };
+
+    const sign1: CollisionObject = {
+      x: 85,
+      y: 142,
+      width: 28,
+      height: 25,
+      colour: "transparent",
+    };
+
+    const sign2: CollisionObject = {
+      x: 311,
+      y: 142,
+      width: 28,
+      height: 25,
+      colour: "transparent",
+    };
+
+    const water: CollisionObject = {
+      x: 112,
+      y: 395,
+      width: 115,
+      height: 110,
+      colour: "transparent",
+    };
+
+    const collisionObjects: CollisionObject[] = [
+      aliHouse,
+      alexHouse,
+      oaksHouse,
+      fence1,
+      fence2,
+      sign1,
+      sign2,
+      water,
+    ];
 
     let currentCharacter: HTMLImageElement = characterDown1;
 
@@ -117,41 +184,63 @@ export const ExploreCvCanvas: React.FC = () => {
     ) {
       if (!canvas) return;
 
-      // console.dir(player.dx);
-
+      // Reset movement
       player.dx = 0;
       player.dy = 0;
 
+      // Set movement based on input
       if (keys["ArrowUp"] || keys["w"]) player.dy = -player.speed;
       if (keys["ArrowDown"] || keys["s"]) player.dy = player.speed;
       if (keys["ArrowLeft"] || keys["a"]) player.dx = -player.speed;
       if (keys["ArrowRight"] || keys["d"]) player.dx = player.speed;
 
-      if (
-        player.x < collisionHouse.x + collisionHouse.width &&
-        player.x + player.size > collisionHouse.x &&
-        player.y < collisionHouse.y + collisionHouse.height &&
-        player.y + player.size > collisionHouse.y
-      ) {
-        if (player.dx < 0) {
-          player.x -= player.dx - 1;
-        } else {
-          player.x -= player.dx + 1;
-        }
+      // Calculate new position
+      const newX = player.x + player.dx;
+      const newY = player.y + player.dy;
 
-        if (player.dy < 0) {
-          player.y -= player.dy - 1;
-        } else {
-          player.y -= player.dy + 1;
+      const wouldCollide = (
+        x: number,
+        y: number,
+        collisionObjects: CollisionObject[]
+      ) => {
+        for (let i = 0; i < collisionObjects.length; i++) {
+          const obj = collisionObjects[i];
+          if (
+            x < obj.x + obj.width &&
+            x + player.size > obj.x &&
+            y < obj.y + obj.height &&
+            y + player.size > obj.y
+          ) {
+            return true;
+          }
         }
+        return false;
+      };
 
-        return;
+      // Check horizontal movement
+      let finalX = newX;
+      if (wouldCollide(newX, player.y, collisionObjects)) {
+        finalX = player.x; // Don't move horizontally if it would cause collision
       }
 
-      player.x += player.dx;
-      player.y += player.dy;
+      // Check vertical movement
+      let finalY = newY;
+      if (wouldCollide(player.x, newY, collisionObjects)) {
+        finalY = player.y; // Don't move vertically if it would cause collision
+      }
 
-      // Clamp position
+      // Check diagonal movement (both x and y changed)
+      if (wouldCollide(finalX, finalY, collisionObjects)) {
+        // If both movements would cause collision, don't move at all
+        finalX = player.x;
+        finalY = player.y;
+      }
+
+      // Apply the movement
+      player.x = finalX;
+      player.y = finalY;
+
+      // Clamp position to canvas bounds
       player.x = Math.max(0, Math.min(canvas.width - player.size, player.x));
       player.y = Math.max(0, Math.min(canvas.height - player.size, player.y));
     }
@@ -164,112 +253,96 @@ export const ExploreCvCanvas: React.FC = () => {
     function drawPlayer() {
       if (!ctx) return;
 
-      if (
-        player.x < collisionHouse.x + collisionHouse.width &&
-        player.x + player.size > collisionHouse.x &&
-        player.y < collisionHouse.y + collisionHouse.height &&
-        player.y + player.size > collisionHouse.y
-      ) {
-        // console.dir("COLLISION");
-        // currentCharacter = book;
-      } else {
-        if (keys["ArrowUp"] || keys["w"]) {
-          if (
-            player.y >= startYPosition - 10 &&
-            player.y <= startYPosition - 1
-          ) {
-            currentCharacter = characterUp1;
-          }
-          if (
-            player.y >= startYPosition - 20 &&
-            player.y <= startYPosition - 11
-          ) {
-            currentCharacter = characterUp2;
-          }
-          if (
-            player.y >= startYPosition - 30 &&
-            player.y <= startYPosition - 21
-          ) {
-            currentCharacter = characterUp3;
-          }
-          if (
-            player.y >= startYPosition - 40 &&
-            player.y <= startYPosition - 31
-          ) {
-            currentCharacter = characterUp4;
-          }
+      if (keys["ArrowUp"] || keys["w"]) {
+        if (player.y >= startYPosition - 10 && player.y <= startYPosition - 1) {
+          currentCharacter = characterUp1;
         }
-        if (keys["ArrowDown"] || keys["s"]) {
-          if (player.y >= startYPosition && player.y <= startYPosition + 9) {
-            currentCharacter = characterDown1;
-          }
-          if (
-            player.y >= startYPosition + 10 &&
-            player.y <= startYPosition + 19
-          ) {
-            currentCharacter = characterDown2;
-          }
-          if (
-            player.y >= startYPosition + 20 &&
-            player.y <= startYPosition + 29
-          ) {
-            currentCharacter = characterDown3;
-          }
-          if (
-            player.y >= startYPosition + 30 &&
-            player.y <= startYPosition + 39
-          ) {
-            currentCharacter = characterDown4;
-          }
+        if (
+          player.y >= startYPosition - 20 &&
+          player.y <= startYPosition - 11
+        ) {
+          currentCharacter = characterUp2;
         }
-        if (keys["ArrowLeft"] || keys["a"]) {
-          if (
-            player.x >= startXPosition - 10 &&
-            player.x <= startXPosition - 1
-          ) {
-            currentCharacter = characterLeft1;
-          }
-          if (
-            player.x >= startXPosition - 20 &&
-            player.x <= startXPosition - 11
-          ) {
-            currentCharacter = characterLeft2;
-          }
-          if (
-            player.x >= startXPosition - 30 &&
-            player.x <= startXPosition - 21
-          ) {
-            currentCharacter = characterLeft3;
-          }
-          if (
-            player.x >= startXPosition - 40 &&
-            player.x <= startXPosition - 31
-          ) {
-            currentCharacter = characterLeft4;
-          }
+        if (
+          player.y >= startYPosition - 30 &&
+          player.y <= startYPosition - 21
+        ) {
+          currentCharacter = characterUp3;
         }
-        if (keys["ArrowRight"] || keys["d"]) {
-          if (player.x >= startXPosition && player.x <= startXPosition + 9) {
-            currentCharacter = characterRight1;
-          }
-          if (
-            player.x >= startXPosition + 10 &&
-            player.x <= startXPosition + 19
-          ) {
-            currentCharacter = characterRight2;
-          }
-          if (
-            player.x >= startXPosition + 20 &&
-            player.x <= startXPosition + 29
-          ) {
-            currentCharacter = characterRight3;
-          }
-          if (
-            player.x >= startXPosition + 30 &&
-            player.x <= startXPosition + 39
-          ) {
-            currentCharacter = characterRight4;
-          }
+        if (
+          player.y >= startYPosition - 40 &&
+          player.y <= startYPosition - 31
+        ) {
+          currentCharacter = characterUp4;
+        }
+      }
+      if (keys["ArrowDown"] || keys["s"]) {
+        if (player.y >= startYPosition && player.y <= startYPosition + 9) {
+          currentCharacter = characterDown1;
+        }
+        if (
+          player.y >= startYPosition + 10 &&
+          player.y <= startYPosition + 19
+        ) {
+          currentCharacter = characterDown2;
+        }
+        if (
+          player.y >= startYPosition + 20 &&
+          player.y <= startYPosition + 29
+        ) {
+          currentCharacter = characterDown3;
+        }
+        if (
+          player.y >= startYPosition + 30 &&
+          player.y <= startYPosition + 39
+        ) {
+          currentCharacter = characterDown4;
+        }
+      }
+      if (keys["ArrowLeft"] || keys["a"]) {
+        if (player.x >= startXPosition - 10 && player.x <= startXPosition - 1) {
+          currentCharacter = characterLeft1;
+        }
+        if (
+          player.x >= startXPosition - 20 &&
+          player.x <= startXPosition - 11
+        ) {
+          currentCharacter = characterLeft2;
+        }
+        if (
+          player.x >= startXPosition - 30 &&
+          player.x <= startXPosition - 21
+        ) {
+          currentCharacter = characterLeft3;
+        }
+        if (
+          player.x >= startXPosition - 40 &&
+          player.x <= startXPosition - 31
+        ) {
+          currentCharacter = characterLeft4;
+        }
+      }
+      if (keys["ArrowRight"] || keys["d"]) {
+        if (player.x >= startXPosition && player.x <= startXPosition + 9) {
+          currentCharacter = characterRight1;
+        }
+        if (
+          player.x >= startXPosition + 10 &&
+          player.x <= startXPosition + 19
+        ) {
+          currentCharacter = characterRight2;
+        }
+        if (
+          player.x >= startXPosition + 20 &&
+          player.x <= startXPosition + 29
+        ) {
+          currentCharacter = characterRight3;
+        }
+        if (
+          player.x >= startXPosition + 30 &&
+          player.x <= startXPosition + 39
+        ) {
+          currentCharacter = characterRight4;
         }
       }
 
@@ -289,26 +362,23 @@ export const ExploreCvCanvas: React.FC = () => {
       }
     }
 
+    function drawCollisionObjects(
+      ctx: CanvasRenderingContext2D,
+      collisionObjects: CollisionObject[]
+    ) {
+      collisionObjects.forEach((item) => {
+        ctx.fillStyle = item.colour;
+        ctx.fillRect(item.x, item.y, item.width, item.height);
+      });
+    }
+
     function gameLoop() {
       if (!ctx || !canvas) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawBackground();
       updatePlayer(canvas, keys, player);
       drawPlayer();
-      ctx.fillStyle = collisionHouse.colour;
-      ctx.fillRect(
-        collisionHouse.x,
-        collisionHouse.y,
-        collisionHouse.width,
-        collisionHouse.height
-      );
-      ctx.fillStyle = collisionHouse2.colour;
-      ctx.fillRect(
-        collisionHouse2.x,
-        collisionHouse2.y,
-        collisionHouse2.width,
-        collisionHouse2.height
-      );
+      drawCollisionObjects(ctx, collisionObjects);
       requestAnimationFrame(gameLoop);
     }
 

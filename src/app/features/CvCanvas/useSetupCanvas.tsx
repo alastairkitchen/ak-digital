@@ -12,8 +12,18 @@ export type Player = {
   dy: number;
 };
 
+type Scene =
+  | "mallet-town"
+  | "ali-house"
+  | "alex-house"
+  | "ali-bedroom"
+  | "alex-bedroom";
+
+type CurrentScene = {
+  scene: Scene;
+};
+
 export type CollisionObject = {
-  id: CollisionObjectId;
   x: number;
   y: number;
   width: number;
@@ -22,20 +32,33 @@ export type CollisionObject = {
   action?: () => void;
 };
 
-type CollisionObjectId =
-  | "ali-house-main"
-  | "ali-house-door"
-  | "alex-house"
-  | "oaks-house"
-  | "fence1"
-  | "fence2"
-  | "sign-ali-house"
-  | "sign2"
-  | "water";
+const changeScene = (
+  intendedScene: Scene,
+  playerX: number,
+  playerY: number,
+  player: Player,
+  currentScene: CurrentScene,
+  intendedCollisionObjects: CollisionObject[]
+) => {
+  currentScene.scene = intendedScene;
+  player.x = playerX;
+  player.y = playerY;
+  player.dx = 0;
+  player.dy = 0;
+  collisionObjects = intendedCollisionObjects;
+};
 
-// 31 width
-// 33 height
-export const player: Player = {
+function drawCollisionObjects(ctx: CanvasRenderingContext2D) {
+  collisionObjects.forEach((item, i) => {
+    ctx.fillStyle = item.colour;
+    ctx.fillRect(item.x, item.y, item.width, item.height);
+  });
+}
+
+const COLLISION_ACTION_COLOUR = "transparent";
+const COLLISION_COLOUR = "transparent";
+
+export let player: Player = {
   x: 200,
   y: 300,
   size: 30,
@@ -44,6 +67,249 @@ export const player: Player = {
   dx: 0,
   dy: 0,
 };
+let collisionObjects: CollisionObject[] = [];
+let currentScene: CurrentScene = { scene: "mallet-town" };
+
+const aliHouseMain: CollisionObject = {
+  x: 130,
+  y: 165,
+  width: 160,
+  height: 120,
+  colour: COLLISION_COLOUR,
+};
+
+const aliHouseDoor: CollisionObject = {
+  x: 158,
+  y: 260,
+  width: 35,
+  height: 40,
+  colour: COLLISION_ACTION_COLOUR,
+  action: () =>
+    changeScene(
+      "ali-house",
+      240,
+      500,
+      player,
+      currentScene,
+      aliHouseCollisionObjects
+    ),
+};
+
+const aliHouseExitFrontDoor: CollisionObject = {
+  x: 222,
+  y: 540,
+  width: 68,
+  height: 30,
+  colour: COLLISION_ACTION_COLOUR,
+  action: () =>
+    changeScene(
+      "mallet-town",
+      300,
+      300,
+      player,
+      currentScene,
+      malletTownCollisionObjects
+    ),
+};
+
+const aliHouseExitBackDoor: CollisionObject = {
+  x: 575,
+  y: 65,
+  width: 32,
+  height: 32,
+  colour: COLLISION_ACTION_COLOUR,
+  action: () =>
+    changeScene(
+      "mallet-town",
+      300,
+      300,
+      player,
+      currentScene,
+      malletTownCollisionObjects
+    ),
+};
+
+const aliEnterBedroomDoor: CollisionObject = {
+  x: 95,
+  y: 65,
+  width: 32,
+  height: 32,
+  colour: COLLISION_ACTION_COLOUR,
+  action: () =>
+    changeScene(
+      "ali-bedroom",
+      300,
+      300,
+      player,
+      currentScene,
+      aliBedroomCollisionObjects
+    ),
+};
+
+const aliBedroomExitDoor: CollisionObject = {
+  x: 128,
+  y: 97,
+  width: 32,
+  height: 32,
+  colour: COLLISION_ACTION_COLOUR,
+  action: () =>
+    changeScene(
+      "ali-house",
+      300,
+      300,
+      player,
+      currentScene,
+      aliHouseCollisionObjects
+    ),
+};
+
+const alexHouse: CollisionObject = {
+  x: 418,
+  y: 165,
+  width: 160,
+  height: 120,
+  colour: COLLISION_COLOUR,
+};
+
+const alexHouseDoor: CollisionObject = {
+  x: 478,
+  y: 260,
+  width: 35,
+  height: 40,
+  colour: COLLISION_ACTION_COLOUR,
+  action: () =>
+    changeScene(
+      "alex-house",
+      100,
+      500,
+      player,
+      currentScene,
+      alexHouseCollisionObjects
+    ),
+};
+
+const alexHouseExitFrontDoor: CollisionObject = {
+  x: 320,
+  y: 540,
+  width: 65,
+  height: 30,
+  colour: COLLISION_ACTION_COLOUR,
+  action: () =>
+    changeScene(
+      "mallet-town",
+      300,
+      300,
+      player,
+      currentScene,
+      malletTownCollisionObjects
+    ),
+};
+
+const alexHouseExitBackDoor: CollisionObject = {
+  x: 96,
+  y: 64,
+  width: 32,
+  height: 32,
+  colour: COLLISION_ACTION_COLOUR,
+  action: () =>
+    changeScene(
+      "mallet-town",
+      300,
+      300,
+      player,
+      currentScene,
+      malletTownCollisionObjects
+    ),
+};
+const alexEnterBedroomDoor: CollisionObject = {
+  x: 576,
+  y: 64,
+  width: 32,
+  height: 32,
+  colour: COLLISION_ACTION_COLOUR,
+  action: () =>
+    changeScene(
+      "alex-bedroom",
+      300,
+      300,
+      player,
+      currentScene,
+      alexBedroomCollisionObjects
+    ),
+};
+
+const alexBedroomExitDoor: CollisionObject = {
+  x: 512,
+  y: 98,
+  width: 32,
+  height: 32,
+  colour: COLLISION_ACTION_COLOUR,
+  action: () =>
+    changeScene(
+      "alex-house",
+      300,
+      300,
+      player,
+      currentScene,
+      alexHouseCollisionObjects
+    ),
+};
+
+const signAlexHouse: CollisionObject = {
+  x: 388,
+  y: 260,
+  width: 28,
+  height: 25,
+  colour: COLLISION_COLOUR,
+};
+
+const fence1: CollisionObject = {
+  x: 285,
+  y: 370,
+  width: 170,
+  height: 25,
+  colour: COLLISION_COLOUR,
+};
+
+const signAliHouse: CollisionObject = {
+  x: 98,
+  y: 260,
+  width: 28,
+  height: 25,
+  colour: COLLISION_COLOUR,
+};
+
+const water: CollisionObject = {
+  x: 112,
+  y: 395,
+  width: 115,
+  height: 110,
+  colour: COLLISION_COLOUR,
+};
+
+const malletTownCollisionObjects = [
+  aliHouseMain,
+  aliHouseDoor,
+  alexHouseDoor,
+  alexHouse,
+  fence1,
+  signAliHouse,
+  signAlexHouse,
+  water,
+];
+
+const aliHouseCollisionObjects = [
+  aliHouseExitFrontDoor,
+  aliHouseExitBackDoor,
+  aliEnterBedroomDoor,
+];
+const alexHouseCollisionObjects = [
+  alexHouseExitFrontDoor,
+  alexHouseExitBackDoor,
+  alexEnterBedroomDoor,
+];
+const aliBedroomCollisionObjects = [aliBedroomExitDoor];
+const alexBedroomCollisionObjects = [alexBedroomExitDoor];
 
 export const useSetupCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -60,102 +326,19 @@ export const useSetupCanvas = () => {
     const img = new Image();
     img.src = "/mallet-town.png";
 
-    const book = new Image();
-    book.src = "/book-item/11a-blank.gif";
+    const aliHouseImg = new Image();
+    aliHouseImg.src = "/ali-house.png";
 
-    const aliHouseMain: CollisionObject = {
-      id: "ali-house-main",
-      x: 101,
-      y: 124,
-      width: 133,
-      height: 129,
-      colour: "red",
-    };
+    const alexHouseImg = new Image();
+    alexHouseImg.src = "/alex-house.png";
 
-    const aliHouseDoor: CollisionObject = {
-      id: "ali-house-door",
-      x: 125,
-      y: 222,
-      width: 35,
-      height: 40,
-      colour: "transparent",
-      action: () => console.dir("Change scene"),
-    };
+    const aliBedroomImg = new Image();
+    aliBedroomImg.src = "/ali-house-bedroom.png";
 
-    const alexHouse: CollisionObject = {
-      id: "alex-house",
-      x: 341,
-      y: 85,
-      width: 112,
-      height: 85,
-      colour: "red",
-    };
+    const alexBedroomImg = new Image();
+    alexBedroomImg.src = "/alex-bedroom.png";
 
-    const oaksHouse: CollisionObject = {
-      id: "oaks-house",
-      x: 290,
-      y: 225,
-      width: 155,
-      height: 110,
-      colour: "red",
-    };
-
-    const fence1: CollisionObject = {
-      id: "fence1",
-      x: 115,
-      y: 256,
-      width: 112,
-      height: 25,
-      colour: "red",
-    };
-
-    const fence2: CollisionObject = {
-      id: "fence2",
-      x: 285,
-      y: 370,
-      width: 170,
-      height: 25,
-      colour: "red",
-    };
-
-    const signAliHouse: CollisionObject = {
-      id: "sign-ali-house",
-      x: 80,
-      y: 229,
-      width: 28,
-      height: 25,
-      colour: "transparent",
-    };
-
-    const sign2: CollisionObject = {
-      id: "sign2",
-      x: 311,
-      y: 142,
-      width: 28,
-      height: 25,
-      colour: "red",
-    };
-
-    const water: CollisionObject = {
-      id: "water",
-      x: 112,
-      y: 395,
-      width: 115,
-      height: 110,
-      colour: "red",
-    };
-
-    const collisionObjects: CollisionObject[] = [
-      aliHouseMain,
-      aliHouseDoor,
-      alexHouse,
-      oaksHouse,
-      // fence1,
-      // fence2,
-      signAliHouse,
-      sign2,
-      water,
-    ];
+    collisionObjects.push(...malletTownCollisionObjects);
 
     const keys: Record<string, boolean> = {};
 
@@ -172,26 +355,27 @@ export const useSetupCanvas = () => {
 
     function drawBackground() {
       if (!ctx || !canvas) return;
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    }
 
-    function drawCollisionObjects(
-      ctx: CanvasRenderingContext2D,
-      collisionObjects: CollisionObject[]
-    ) {
-      collisionObjects.forEach((item) => {
-        ctx.fillStyle = item.colour;
-        ctx.fillRect(item.x, item.y, item.width, item.height);
-      });
+      if (currentScene.scene === "mallet-town") {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      } else if (currentScene.scene === "ali-house") {
+        ctx.drawImage(aliHouseImg, 0, 0, canvas.width, canvas.height);
+      } else if (currentScene.scene === "alex-house") {
+        ctx.drawImage(alexHouseImg, 0, 0, canvas.width, canvas.height);
+      } else if (currentScene.scene === "ali-bedroom") {
+        ctx.drawImage(aliBedroomImg, 0, 0, canvas.width, canvas.height);
+      } else if (currentScene.scene === "alex-bedroom") {
+        ctx.drawImage(alexBedroomImg, 0, 0, canvas.width, canvas.height);
+      }
     }
 
     function gameLoop() {
       if (!ctx || !canvas) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawBackground();
-      updatePlayer(canvas, keys, player, collisionObjects, img);
+      updatePlayer(canvas, keys, player, collisionObjects);
       drawPlayer(ctx, keys, player);
-      drawCollisionObjects(ctx, collisionObjects);
+      drawCollisionObjects(ctx);
       requestAnimationFrame(gameLoop);
     }
 
@@ -207,5 +391,5 @@ export const useSetupCanvas = () => {
     };
   }, []);
 
-  return { canvasRef, player };
+  return { canvasRef };
 };

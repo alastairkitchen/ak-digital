@@ -5,8 +5,7 @@ export const useUpdatePlayer = () => {
     canvas: HTMLCanvasElement | null,
     keys: Record<string, boolean>,
     player: Player,
-    collisionObjects: CollisionObject[],
-    img: HTMLImageElement
+    collisionObjects: CollisionObject[]
   ) => {
     if (!canvas) return;
 
@@ -50,6 +49,7 @@ export const useUpdatePlayer = () => {
 
     // Check horizontal movement
     let finalX = newX;
+
     if (wouldCollide(newX, player.y, collisionObjects)) {
       finalX = player.x; // Don't move horizontally if it would cause collision
     }

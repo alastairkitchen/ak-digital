@@ -200,10 +200,10 @@ const signAliHouse: CollisionObject = {
 };
 
 const water: CollisionObject = {
-  x: 400,
-  y: 500,
-  width: 115,
-  height: 200,
+  x: 450,
+  y: 418,
+  width: 160,
+  height: 160,
   colour: COLLISION_COLOUR,
 };
 

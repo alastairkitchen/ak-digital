@@ -1,5 +1,4 @@
-import Image from "next/image";
-import { ExploreCvCanvas } from "./features/ExploreCvCanvas";
+import { CvCanvas } from "./features/CvCanvas/CvCanvas";
 
 export default function Home() {
   return (
@@ -19,7 +18,7 @@ export default function Home() {
               </div>
             </div>
             <div>
-              <ExploreCvCanvas />
+              <CvCanvas />
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { CollisionObject } from "../data/collision-objects";
+import { CollisionObject } from "../data";
 import { Player } from "../useSetupCanvas";
 
 export const useUpdatePlayer = () => {

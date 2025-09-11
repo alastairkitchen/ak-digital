@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useUpdatePlayer } from "./utils/useUpdatePlayer";
 import { useDrawerPlayer } from "./utils/useDrawerPlayer";
-import {
-  CollisionObject,
-  malletTownCollisionObjects,
-} from "./data/collision-objects";
+import { CollisionObject } from "./collision-objects";
+import { aliHouseCollisionObjects } from "./collision-objects/ali-house/ali-house-objects";
+import { COLLISION_DEBUG } from "./const";
 
 type Rectangle = {
   x: number;
@@ -74,7 +73,8 @@ function drawCollisionObjects(ctx: CanvasRenderingContext2D) {
 }
 
 export let collisionObjects: CollisionObject[] = [];
-export let currentScene: CurrentScene = { scene: "mallet-town" };
+// export let currentScene: CurrentScene = { scene: "mallet-town" };
+export let currentScene: CurrentScene = { scene: "ali-house" };
 
 export const useSetupCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -183,8 +183,6 @@ export const useSetupCanvas = () => {
 
     const mousePos = getMousePos(canvas, event);
 
-    console.dir("moving");
-
     if (interaction.isDragging) {
       setRect((prevRect) => ({
         ...prevRect,
@@ -274,7 +272,8 @@ export const useSetupCanvas = () => {
     const alexBedroomImg = new Image();
     alexBedroomImg.src = "/alex-bedroom.png";
 
-    collisionObjects.push(...malletTownCollisionObjects);
+    // collisionObjects.push(...malletTownCollisionObjects);
+    collisionObjects.push(...aliHouseCollisionObjects);
 
     const keys: Record<string, boolean> = {};
 
@@ -305,31 +304,33 @@ export const useSetupCanvas = () => {
       }
     }
 
-    const handles = [
-      { x: rect.x, y: rect.y }, // nw
-      { x: rect.x + rect.width, y: rect.y }, // ne
-      { x: rect.x, y: rect.y + rect.height }, // sw
-      { x: rect.x + rect.width, y: rect.y + rect.height }, // se
-      { x: rect.x + rect.width / 2, y: rect.y }, // n
-      { x: rect.x + rect.width / 2, y: rect.y + rect.height }, // s
-      { x: rect.x + rect.width, y: rect.y + rect.height / 2 }, // e
-      { x: rect.x, y: rect.y + rect.height / 2 }, // w
-    ];
+    if (COLLISION_DEBUG) {
+      const handles = [
+        { x: rect.x, y: rect.y }, // nw
+        { x: rect.x + rect.width, y: rect.y }, // ne
+        { x: rect.x, y: rect.y + rect.height }, // sw
+        { x: rect.x + rect.width, y: rect.y + rect.height }, // se
+        { x: rect.x + rect.width / 2, y: rect.y }, // n
+        { x: rect.x + rect.width / 2, y: rect.y + rect.height }, // s
+        { x: rect.x + rect.width, y: rect.y + rect.height / 2 }, // e
+        { x: rect.x, y: rect.y + rect.height / 2 }, // w
+      ];
 
-    handles.forEach((handle) => {
-      ctx.fillRect(
-        handle.x - HANDLE_SIZE / 2,
-        handle.y - HANDLE_SIZE / 2,
-        HANDLE_SIZE,
-        HANDLE_SIZE
-      );
-      ctx.strokeRect(
-        handle.x - HANDLE_SIZE / 2,
-        handle.y - HANDLE_SIZE / 2,
-        HANDLE_SIZE,
-        HANDLE_SIZE
-      );
-    });
+      handles.forEach((handle) => {
+        ctx.fillRect(
+          handle.x - HANDLE_SIZE / 2,
+          handle.y - HANDLE_SIZE / 2,
+          HANDLE_SIZE,
+          HANDLE_SIZE
+        );
+        ctx.strokeRect(
+          handle.x - HANDLE_SIZE / 2,
+          handle.y - HANDLE_SIZE / 2,
+          HANDLE_SIZE,
+          HANDLE_SIZE
+        );
+      });
+    }
 
     function gameLoop() {
       if (!ctx || !canvas) return;
@@ -340,12 +341,14 @@ export const useSetupCanvas = () => {
       drawCollisionObjects(ctx);
       requestAnimationFrame(gameLoop);
 
-      // Collision debug rectanglei
-      ctx.fillStyle = "rgba(59, 130, 246, 0.6)";
-      ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
-      ctx.strokeStyle = "#1e40af";
-      ctx.lineWidth = 2;
-      ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
+      if (COLLISION_DEBUG) {
+        // Collision debug rectanglei
+        ctx.fillStyle = "rgba(59, 130, 246, 0.6)";
+        ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
+        ctx.strokeStyle = "#1e40af";
+        ctx.lineWidth = 2;
+        ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
+      }
     }
 
     // Wait until background image is loaded before starting game loop
@@ -364,20 +367,24 @@ export const useSetupCanvas = () => {
       }
     };
 
-    canvas.addEventListener("mousedown", handleMouseDown);
-    canvas.addEventListener("mousemove", debouncedMouseMove);
-    canvas.addEventListener("mouseup", handleMouseUp);
-    canvas.addEventListener("mouseleave", handleMouseUp);
+    if (COLLISION_DEBUG) {
+      canvas.addEventListener("mousedown", handleMouseDown);
+      canvas.addEventListener("mousemove", debouncedMouseMove);
+      canvas.addEventListener("mouseup", handleMouseUp);
+      canvas.addEventListener("mouseleave", handleMouseUp);
+    }
 
     // Clean up event listeners
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("keyup", handleKeyUp);
 
-      canvas.removeEventListener("mousedown", handleMouseDown);
-      canvas.removeEventListener("mousemove", debouncedMouseMove);
-      canvas.removeEventListener("mouseup", handleMouseUp);
-      canvas.removeEventListener("mouseleave", handleMouseUp);
+      if (COLLISION_DEBUG) {
+        canvas.removeEventListener("mousedown", handleMouseDown);
+        canvas.removeEventListener("mousemove", debouncedMouseMove);
+        canvas.removeEventListener("mouseup", handleMouseUp);
+        canvas.removeEventListener("mouseleave", handleMouseUp);
+      }
     };
   }, [interaction, rect]);
 

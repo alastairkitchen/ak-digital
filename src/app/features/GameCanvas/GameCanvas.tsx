@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useSetupCanvas } from "./useSetupCanvas";
 import { player } from "./useSetupCanvas";
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./const";
 
 export const GameCanvas: React.FC = () => {
   const { canvasRef, rect } = useSetupCanvas();
@@ -19,7 +20,12 @@ export const GameCanvas: React.FC = () => {
         {Math.round(rect.height)}
       </p>
       <button onClick={() => setUpdate(!update)}>update</button>
-      <canvas ref={canvasRef} height="576" width="704"></canvas>
+      <canvas
+        ref={canvasRef}
+        height={CANVAS_HEIGHT}
+        width={CANVAS_WIDTH}
+      ></canvas>
     </>
   );
 };
+export { CANVAS_HEIGHT, CANVAS_WIDTH };

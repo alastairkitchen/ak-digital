@@ -1,4 +1,4 @@
-import { CvCanvas } from "./features/CvCanvas/CvCanvas";
+import { GameCanvas } from "./features/GameCanvas/GameCanvas";
 
 export default function Home() {
   return (
@@ -18,7 +18,7 @@ export default function Home() {
               </div>
             </div>
             <div>
-              <CvCanvas />
+              <GameCanvas />
             </div>
           </div>
         </div>

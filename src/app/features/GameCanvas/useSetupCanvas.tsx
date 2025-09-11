@@ -97,7 +97,6 @@ export const useSetupCanvas = () => {
 
   const HANDLE_SIZE = 8;
 
-  // Get mouse position relative to canvas
   const getMousePos = (canvas: HTMLCanvasElement, event: MouseEvent) => {
     const rect = canvas.getBoundingClientRect();
     return {
@@ -106,7 +105,6 @@ export const useSetupCanvas = () => {
     };
   };
 
-  // Check if point is inside rectangle
   const isPointInRect = (point: { x: number; y: number }) => {
     return (
       point.x >= rect.x &&
@@ -116,7 +114,6 @@ export const useSetupCanvas = () => {
     );
   };
 
-  // Get resize handle at mouse position
   const getResizeHandle = (mousePos: { x: number; y: number }) => {
     const { x, y, width, height } = rect;
     const handles = {
@@ -151,7 +148,6 @@ export const useSetupCanvas = () => {
     return null;
   };
 
-  // Handle mouse down
   const handleMouseDown = (event: MouseEvent) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -181,22 +177,21 @@ export const useSetupCanvas = () => {
     }
   };
 
-  // Handle mouse move
   const handleMouseMove = (event: MouseEvent) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const mousePos = getMousePos(canvas, event);
 
+    console.dir("moving");
+
     if (interaction.isDragging) {
-      // Update rectangle position
       setRect((prevRect) => ({
         ...prevRect,
         x: mousePos.x - interaction.dragOffset.x,
         y: mousePos.y - interaction.dragOffset.y,
       }));
     } else if (interaction.isResizing && interaction.resizeHandle) {
-      // Update rectangle size
       setRect((prevRect) => {
         const newRect = { ...prevRect };
         const handle = interaction.resizeHandle!;
@@ -225,7 +220,6 @@ export const useSetupCanvas = () => {
         return newRect;
       });
     } else {
-      // Update cursor based on hover
       const resizeHandle = getResizeHandle(mousePos);
       let cursor = "default";
 
@@ -249,7 +243,6 @@ export const useSetupCanvas = () => {
     }
   };
 
-  // Handle mouse up
   const handleMouseUp = () => {
     setInteraction({
       isDragging: false,
@@ -347,19 +340,12 @@ export const useSetupCanvas = () => {
       drawCollisionObjects(ctx);
       requestAnimationFrame(gameLoop);
 
-      // Draw rectangle
+      // Collision debug rectanglei
       ctx.fillStyle = "rgba(59, 130, 246, 0.6)";
       ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
-
-      // Draw border
       ctx.strokeStyle = "#1e40af";
       ctx.lineWidth = 2;
       ctx.strokeRect(rect.x, rect.y, rect.width, rect.height);
-
-      // Draw resize handles
-      ctx.fillStyle = "#fff";
-      ctx.strokeStyle = "#333";
-      ctx.lineWidth = 1;
     }
 
     // Wait until background image is loaded before starting game loop
@@ -367,8 +353,19 @@ export const useSetupCanvas = () => {
       gameLoop();
     };
 
+    let mouseMoveTimeoutId: any | null = null;
+
+    let debouncedMouseMove = (e: MouseEvent) => {
+      if (mouseMoveTimeoutId === null) {
+        mouseMoveTimeoutId = setTimeout(() => {
+          handleMouseMove(e);
+          mouseMoveTimeoutId = null;
+        }, 50);
+      }
+    };
+
     canvas.addEventListener("mousedown", handleMouseDown);
-    canvas.addEventListener("mousemove", handleMouseMove);
+    canvas.addEventListener("mousemove", debouncedMouseMove);
     canvas.addEventListener("mouseup", handleMouseUp);
     canvas.addEventListener("mouseleave", handleMouseUp);
 
@@ -378,7 +375,7 @@ export const useSetupCanvas = () => {
       document.removeEventListener("keyup", handleKeyUp);
 
       canvas.removeEventListener("mousedown", handleMouseDown);
-      canvas.removeEventListener("mousemove", handleMouseMove);
+      canvas.removeEventListener("mousemove", debouncedMouseMove);
       canvas.removeEventListener("mouseup", handleMouseUp);
       canvas.removeEventListener("mouseleave", handleMouseUp);
     };

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useSetupCanvas } from "./useSetupCanvas";
 import { player } from "./useSetupCanvas";
 
-export const CvCanvas: React.FC = () => {
+export const GameCanvas: React.FC = () => {
   const { canvasRef, rect } = useSetupCanvas();
 
   const [update, setUpdate] = useState(true);

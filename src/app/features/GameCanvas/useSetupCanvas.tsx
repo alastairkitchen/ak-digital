@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useUpdatePlayer } from "./utils/useUpdatePlayer";
 import { useDrawerPlayer } from "./utils/useDrawerPlayer";
 import { CollisionObject } from "./collision-objects";
-import { aliHouseCollisionObjects } from "./collision-objects/ali-house/ali-house-objects";
 import { COLLISION_DEBUG } from "./const";
+import { malletTownCollisionObjects } from "./collision-objects/mallet-town/mallet-town-objects";
 
 type Rectangle = {
   x: number;
@@ -73,8 +73,8 @@ function drawCollisionObjects(ctx: CanvasRenderingContext2D) {
 }
 
 export let collisionObjects: CollisionObject[] = [];
-// export let currentScene: CurrentScene = { scene: "mallet-town" };
-export let currentScene: CurrentScene = { scene: "ali-house" };
+export let currentScene: CurrentScene = { scene: "mallet-town" };
+// export let currentScene: CurrentScene = { scene: "alex-house" };
 
 export const useSetupCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -272,8 +272,8 @@ export const useSetupCanvas = () => {
     const alexBedroomImg = new Image();
     alexBedroomImg.src = "/alex-bedroom.png";
 
-    // collisionObjects.push(...malletTownCollisionObjects);
-    collisionObjects.push(...aliHouseCollisionObjects);
+    collisionObjects.push(...malletTownCollisionObjects);
+    // collisionObjects.push(...alexHouseCollisionObjects);
 
     const keys: Record<string, boolean> = {};
 

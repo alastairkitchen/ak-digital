@@ -1,6 +1,7 @@
 import { COLLISION_ACTION_COLOUR, COLLISION_COLOUR, CollisionObject } from "..";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../../GameCanvas";
 import { changeScene, currentScene } from "../../useSetupCanvas";
+import { aliBedroomCollisionObjects } from "../ali-bedroom/ali-bedroom-objects";
 import { malletTownCollisionObjects } from "../mallet-town/mallet-town-objects";
 
 // bounds -------------------------------------
@@ -209,8 +210,8 @@ const aliHouseExitBackDoor: CollisionObject = {
   action: () =>
     changeScene(
       "mallet-town",
-      300,
-      300,
+      224,
+      90,
       currentScene,
       malletTownCollisionObjects
     ),
@@ -225,21 +226,11 @@ const aliEnterBedroomDoor: CollisionObject = {
   action: () =>
     changeScene(
       "ali-bedroom",
-      300,
-      300,
+      130,
+      148,
       currentScene,
       aliBedroomCollisionObjects
     ),
-};
-
-const aliBedroomExitDoor: CollisionObject = {
-  x: 128,
-  y: 97,
-  width: 32,
-  height: 32,
-  colour: COLLISION_ACTION_COLOUR,
-  action: () =>
-    changeScene("ali-house", 300, 300, currentScene, aliHouseCollisionObjects),
 };
 
 export const aliHouseCollisionObjects = [
@@ -269,5 +260,3 @@ export const aliHouseCollisionObjects = [
   livingRoomStand,
   livingRoomChairs,
 ];
-
-export const aliBedroomCollisionObjects = [aliBedroomExitDoor];

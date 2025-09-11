@@ -1,4 +1,4 @@
-export const COLLISION_ACTION_COLOUR = "green";
+export const COLLISION_ACTION_COLOUR = "transparent";
 export const COLLISION_COLOUR = "transparent";
 
 export type CollisionObject = {

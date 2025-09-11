@@ -102,8 +102,8 @@ const alexHouseDoor: CollisionObject = {
   action: () =>
     changeScene(
       "alex-house",
-      100,
-      500,
+      338,
+      455,
       currentScene,
       alexHouseCollisionObjects
     ),

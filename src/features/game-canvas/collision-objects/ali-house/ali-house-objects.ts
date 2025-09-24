@@ -1,5 +1,5 @@
 import { COLLISION_ACTION_COLOUR, COLLISION_COLOUR, CollisionObject } from "..";
-import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../../GameCanvas";
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../../const";
 import { changeScene, currentScene } from "../../useSetupCanvas";
 import { aliBedroomCollisionObjects } from "../ali-bedroom/ali-bedroom-objects";
 import { malletTownCollisionObjects } from "../mallet-town/mallet-town-objects";

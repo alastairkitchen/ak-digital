@@ -1,29 +1,41 @@
-import { GameCanvas } from "./features/GameCanvas/GameCanvas";
+"use client";
+import { Box, Button, Heading, Link, Text } from "@chakra-ui/react";
+import { GameCanvas } from "../features/game-canvas/GameCanvas";
+import { Counter } from "@/features/Counter";
+import { ReduxModalsContainer } from "@/features/redux-modals/ReduxModalsContainer";
+import { useOpenModal } from "@/features/redux-modals/useOpenModal";
 
 export default function Home() {
+  const { openModal: openCVSummaryModal } = useOpenModal("cvSummary");
+  const { openModal: openSkillsModal } = useOpenModal("skills");
+
   return (
     <>
-      <main className="flex pt-40">
-        <div className="container">
-          <div className="flex justify-center">
-            <div>
-              <h1 className="text-lg">
-                Hi My name is{" "}
-                <span className="text-2xl font-bold">Alastair Kitchen</span>
-              </h1>
-              <div className="flex items-center gap-2">
-                <button className="btn">View resume</button>
-                <span>or</span>
-                <button className="btn">Explore resume</button>
-              </div>
-            </div>
-            <div>
-              <GameCanvas />
-            </div>
-          </div>
-        </div>
+      <main>
+        <Box maxW="900px" margin="0 auto">
+          <Heading as="h1">Hi my name is Alastair Kitchen</Heading>
+
+          <Text>
+            I'm a frontend developer that specialises in solving problems using
+            React, Typescript, Html and css
+          </Text>
+
+          <Text>Explore my Cv</Text>
+
+          <GameCanvas />
+
+          <Button onClick={() => openCVSummaryModal()}>Summary</Button>
+          <Button onClick={() => openSkillsModal()}>Technical Skills</Button>
+
+          <Counter />
+
+          <Text>
+            Alternaitavely <Link>Download cv as PDF</Link>
+          </Text>
+        </Box>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center"></footer>
+      <footer></footer>
+      <ReduxModalsContainer />
     </>
   );
 }

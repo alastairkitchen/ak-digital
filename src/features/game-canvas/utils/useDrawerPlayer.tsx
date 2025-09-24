@@ -1,3 +1,4 @@
+"use client";
 import { player, Player } from "../useSetupCanvas";
 
 const characterUp1 = new Image();

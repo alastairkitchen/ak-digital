@@ -12,9 +12,9 @@ export default function Home() {
                 <span className="text-2xl font-bold">Alastair Kitchen</span>
               </h1>
               <div className="flex items-center gap-2">
-                <button className="btn">View resum</button>
+                <button className="btn">View resume</button>
                 <span>or</span>
-                <button className="btn">Explore resum</button>
+                <button className="btn">Explore resume</button>
               </div>
             </div>
             <div>

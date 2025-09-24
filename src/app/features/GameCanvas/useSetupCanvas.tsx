@@ -74,7 +74,7 @@ function drawCollisionObjects(ctx: CanvasRenderingContext2D) {
 
 export let collisionObjects: CollisionObject[] = [];
 export let currentScene: CurrentScene = { scene: "mallet-town" };
-// export let currentScene: CurrentScene = { scene: "alex-house" };
+// export let currentScene: CurrentScene = { scene: "alex-bedroom" };
 
 export const useSetupCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -273,7 +273,7 @@ export const useSetupCanvas = () => {
     alexBedroomImg.src = "/alex-bedroom.png";
 
     collisionObjects.push(...malletTownCollisionObjects);
-    // collisionObjects.push(...alexHouseCollisionObjects);
+    // collisionObjects.push(...alexBedroomCollisionObjects);
 
     const keys: Record<string, boolean> = {};
 
@@ -342,7 +342,6 @@ export const useSetupCanvas = () => {
       requestAnimationFrame(gameLoop);
 
       if (COLLISION_DEBUG) {
-        // Collision debug rectanglei
         ctx.fillStyle = "rgba(59, 130, 246, 0.6)";
         ctx.fillRect(rect.x, rect.y, rect.width, rect.height);
         ctx.strokeStyle = "#1e40af";
@@ -351,7 +350,6 @@ export const useSetupCanvas = () => {
       }
     }
 
-    // Wait until background image is loaded before starting game loop
     img.onload = () => {
       gameLoop();
     };

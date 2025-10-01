@@ -34,8 +34,8 @@ export default function Home() {
           </Text>
         </Box>
       </main>
-      <footer></footer>
       <ReduxModalsContainer />
+      <footer>Add something here</footer>
     </>
   );
 }

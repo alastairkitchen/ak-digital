@@ -1,5 +1,6 @@
-import { CollisionObject } from "../data";
+import { CollisionObject } from "../collision-objects";
 import { Player } from "../useSetupCanvas";
+import { wouldCollide } from "./would-collide";
 
 export const useUpdatePlayer = () => {
   const updatePlayer = (
@@ -10,43 +11,28 @@ export const useUpdatePlayer = () => {
   ) => {
     if (!canvas) return;
 
-    // Reset movement
     player.dx = 0;
     player.dy = 0;
 
-    // Set movement based on input
-    if (keys["ArrowUp"] || keys["w"]) player.dy = -player.speed;
-    if (keys["ArrowDown"] || keys["s"]) player.dy = player.speed;
-    if (keys["ArrowLeft"] || keys["a"]) player.dx = -player.speed;
-    if (keys["ArrowRight"] || keys["d"]) player.dx = player.speed;
+    if (keys["ArrowUp"] || keys["w"]) {
+      player.dy = -player.speed;
+      player.direction = "up";
+    }
+    if (keys["ArrowDown"] || keys["s"]) {
+      player.dy = player.speed;
+      player.direction = "down";
+    }
+    if (keys["ArrowLeft"] || keys["a"]) {
+      player.dx = -player.speed;
+      player.direction = "left";
+    }
+    if (keys["ArrowRight"] || keys["d"]) {
+      player.dx = player.speed;
+      player.direction = "right";
+    }
 
-    // Calculate new position
     const newX = player.x + player.dx;
     const newY = player.y + player.dy;
-
-    const wouldCollide = (
-      x: number,
-      y: number,
-      collisionObjects: CollisionObject[]
-    ) => {
-      for (let i = 0; i < collisionObjects.length; i++) {
-        const obj = collisionObjects[i];
-
-        if (
-          x < obj.x + obj.width &&
-          x + player.size > obj.x &&
-          y < obj.y + obj.height &&
-          y + player.size > obj.y
-        ) {
-          if (!!obj.action) {
-            obj.action();
-          }
-
-          return true;
-        }
-      }
-      return false;
-    };
 
     // Check horizontal movement
     let finalX = newX;
@@ -61,8 +47,15 @@ export const useUpdatePlayer = () => {
     //   finalY = player.y; // Don't move vertically if it would cause collision
     // }
 
+    const { isColliding } = wouldCollide(
+      finalX,
+      finalY,
+      collisionObjects,
+      player
+    );
+
     // Check diagonal movement (both x and y changed)
-    if (wouldCollide(finalX, finalY, collisionObjects)) {
+    if (isColliding) {
       // If both movements would cause collision, don't move at all
       finalX = player.x;
       finalY = player.y;

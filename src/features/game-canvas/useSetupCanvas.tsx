@@ -3,7 +3,9 @@ import { useUpdatePlayer } from "./utils/useUpdatePlayer";
 import { useDrawerPlayer } from "./utils/useDrawerPlayer";
 import { CollisionObject } from "./collision-objects";
 import { COLLISION_DEBUG } from "./const";
-import { malletTownCollisionObjects } from "./collision-objects/mallet-town/mallet-town-objects";
+import { aliHouseCollisionObjects } from "./collision-objects/ali-house/ali-house-objects";
+import { aliHouseInteractionObjects } from "./interaction-objects/ali-house/ali-house-objects";
+import { useHandleInteraction } from "./utils/useHandleInteraction";
 
 type Rectangle = {
   x: number;
@@ -12,7 +14,7 @@ type Rectangle = {
   height: number;
 };
 
-type InteractionState = {
+type DebugInteractionState = {
   isDragging: boolean;
   isResizing: boolean;
   resizeHandle: string | null; // 'n', 's', 'e', 'w', 'ne', 'nw', 'se', 'sw'
@@ -27,6 +29,7 @@ export type Player = {
   speed: number;
   dx: number;
   dy: number;
+  direction: PlayerDirection;
 };
 
 type Scene =
@@ -40,6 +43,8 @@ type CurrentScene = {
   scene: Scene;
 };
 
+export type PlayerDirection = "up" | "down" | "left" | "right" | "idle";
+
 export let player: Player = {
   x: 200,
   y: 300,
@@ -48,6 +53,7 @@ export let player: Player = {
   speed: 2,
   dx: 0,
   dy: 0,
+  direction: "down",
 };
 
 export const changeScene = (
@@ -72,14 +78,23 @@ function drawCollisionObjects(ctx: CanvasRenderingContext2D) {
   });
 }
 
+function drawInteractionObjects(ctx: CanvasRenderingContext2D) {
+  interactionObjects.forEach((item) => {
+    ctx.fillStyle = item.colour;
+    ctx.fillRect(item.x, item.y, item.width, item.height);
+  });
+}
+
 export let collisionObjects: CollisionObject[] = [];
-export let currentScene: CurrentScene = { scene: "mallet-town" };
-// export let currentScene: CurrentScene = { scene: "alex-bedroom" };
+export let interactionObjects: CollisionObject[] = [];
+// export let currentScene: CurrentScene = { scene: "mallet-town" };
+export let currentScene: CurrentScene = { scene: "ali-house" };
 
 export const useSetupCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { drawPlayer } = useDrawerPlayer();
   const { updatePlayer } = useUpdatePlayer();
+  const { handleInteraction } = useHandleInteraction();
 
   const [rect, setRect] = useState<Rectangle>({
     x: 150,
@@ -88,12 +103,13 @@ export const useSetupCanvas = () => {
     height: 150,
   });
 
-  const [interaction, setInteraction] = useState<InteractionState>({
-    isDragging: false,
-    isResizing: false,
-    resizeHandle: null,
-    dragOffset: { x: 0, y: 0 },
-  });
+  const [debugInteraction, setDebugInteraction] =
+    useState<DebugInteractionState>({
+      isDragging: false,
+      isResizing: false,
+      resizeHandle: null,
+      dragOffset: { x: 0, y: 0 },
+    });
 
   const HANDLE_SIZE = 8;
 
@@ -156,16 +172,14 @@ export const useSetupCanvas = () => {
     const resizeHandle = getResizeHandle(mousePos);
 
     if (resizeHandle) {
-      // Start resizing
-      setInteraction({
+      setDebugInteraction({
         isDragging: false,
         isResizing: true,
         resizeHandle,
         dragOffset: { x: 0, y: 0 },
       });
     } else if (isPointInRect(mousePos)) {
-      // Start dragging
-      setInteraction({
+      setDebugInteraction({
         isDragging: true,
         isResizing: false,
         resizeHandle: null,
@@ -183,16 +197,16 @@ export const useSetupCanvas = () => {
 
     const mousePos = getMousePos(canvas, event);
 
-    if (interaction.isDragging) {
+    if (debugInteraction.isDragging) {
       setRect((prevRect) => ({
         ...prevRect,
-        x: mousePos.x - interaction.dragOffset.x,
-        y: mousePos.y - interaction.dragOffset.y,
+        x: mousePos.x - debugInteraction.dragOffset.x,
+        y: mousePos.y - debugInteraction.dragOffset.y,
       }));
-    } else if (interaction.isResizing && interaction.resizeHandle) {
+    } else if (debugInteraction.isResizing && debugInteraction.resizeHandle) {
       setRect((prevRect) => {
         const newRect = { ...prevRect };
-        const handle = interaction.resizeHandle!;
+        const handle = debugInteraction.resizeHandle!;
 
         if (handle.includes("n")) {
           const deltaY = mousePos.y - prevRect.y;
@@ -242,7 +256,7 @@ export const useSetupCanvas = () => {
   };
 
   const handleMouseUp = () => {
-    setInteraction({
+    setDebugInteraction({
       isDragging: false,
       isResizing: false,
       resizeHandle: null,
@@ -272,8 +286,9 @@ export const useSetupCanvas = () => {
     const alexBedroomImg = new Image();
     alexBedroomImg.src = "/alex-bedroom.png";
 
-    collisionObjects.push(...malletTownCollisionObjects);
-    // collisionObjects.push(...alexBedroomCollisionObjects);
+    // collisionObjects.push(...malletTownCollisionObjects);
+    collisionObjects.push(...aliHouseCollisionObjects);
+    interactionObjects.push(...aliHouseInteractionObjects);
 
     const keys: Record<string, boolean> = {};
 
@@ -337,8 +352,10 @@ export const useSetupCanvas = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawBackground();
       updatePlayer(canvas, keys, player, collisionObjects);
+      handleInteraction(keys, player, interactionObjects);
       drawPlayer(ctx, keys, player);
       drawCollisionObjects(ctx);
+      drawInteractionObjects(ctx);
       requestAnimationFrame(gameLoop);
 
       if (COLLISION_DEBUG) {
@@ -384,7 +401,7 @@ export const useSetupCanvas = () => {
         canvas.removeEventListener("mouseleave", handleMouseUp);
       }
     };
-  }, [interaction, rect]);
+  }, [debugInteraction, rect]);
 
   return { canvasRef, rect };
 };

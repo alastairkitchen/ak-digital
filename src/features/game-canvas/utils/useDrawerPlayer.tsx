@@ -1,5 +1,5 @@
 "use client";
-import { player, Player } from "../useSetupCanvas";
+import { player, PlayerDirection, type Player } from "../useSetupCanvas";
 
 const characterUp1 = new Image();
 characterUp1.src = "http://localhost:3000/character-sprites/up-1.png";
@@ -38,6 +38,7 @@ const characterRight4 = new Image();
 characterRight4.src = "http://localhost:3000/character-sprites/right-4.png";
 
 let currentCharacter: HTMLImageElement = characterDown1;
+let lastDirection: PlayerDirection = "down";
 
 export const useDrawerPlayer = () => {
   let startXPosition: number = player.x;
@@ -50,21 +51,34 @@ export const useDrawerPlayer = () => {
   ) => {
     if (!ctx) return;
 
+    if (player.direction !== lastDirection) {
+      startXPosition = player.x;
+      startYPosition = player.y;
+    }
+
     if (keys["ArrowUp"] || keys["w"]) {
+      currentCharacter = characterUp1;
       if (player.y >= startYPosition - 10 && player.y <= startYPosition - 1) {
         currentCharacter = characterUp1;
-      }
-      if (player.y >= startYPosition - 20 && player.y <= startYPosition - 11) {
+      } else if (
+        player.y >= startYPosition - 20 &&
+        player.y <= startYPosition - 11
+      ) {
         currentCharacter = characterUp2;
-      }
-      if (player.y >= startYPosition - 30 && player.y <= startYPosition - 21) {
+      } else if (
+        player.y >= startYPosition - 30 &&
+        player.y <= startYPosition - 21
+      ) {
         currentCharacter = characterUp3;
-      }
-      if (player.y >= startYPosition - 40 && player.y <= startYPosition - 31) {
+      } else if (
+        player.y >= startYPosition - 40 &&
+        player.y <= startYPosition - 31
+      ) {
         currentCharacter = characterUp4;
       }
     }
     if (keys["ArrowDown"] || keys["s"]) {
+      currentCharacter = characterDown1;
       if (player.y >= startYPosition && player.y <= startYPosition + 9) {
         currentCharacter = characterDown1;
       }
@@ -79,6 +93,7 @@ export const useDrawerPlayer = () => {
       }
     }
     if (keys["ArrowLeft"] || keys["a"]) {
+      currentCharacter = characterLeft1;
       if (player.x >= startXPosition - 10 && player.x <= startXPosition - 1) {
         currentCharacter = characterLeft1;
       }
@@ -93,6 +108,7 @@ export const useDrawerPlayer = () => {
       }
     }
     if (keys["ArrowRight"] || keys["d"]) {
+      currentCharacter = characterRight1;
       if (player.x >= startXPosition && player.x <= startXPosition + 9) {
         currentCharacter = characterRight1;
       }
@@ -121,6 +137,8 @@ export const useDrawerPlayer = () => {
     if (player.x >= startXPosition + 40 || player.x <= startXPosition - 40) {
       startXPosition = player.x;
     }
+
+    lastDirection = player.direction;
   };
 
   return {

@@ -1,5 +1,14 @@
+import { ModalType } from "@/store/appSlice";
+import { PlayerDirection } from "../useSetupCanvas";
+
 export const COLLISION_ACTION_COLOUR = "transparent";
 export const COLLISION_COLOUR = "transparent";
+export const COLLISION_INTERACTION_COLOUR = "transparent";
+
+type Interaction = {
+  playerDirectionToActivate: PlayerDirection;
+  modalType: ModalType;
+};
 
 export type CollisionObject = {
   x: number;
@@ -8,4 +17,5 @@ export type CollisionObject = {
   height: number;
   colour: string;
   action?: () => void;
+  interaction?: Interaction;
 };

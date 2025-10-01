@@ -12,6 +12,7 @@ const tableBook: CollisionObject = {
   interaction: {
     playerDirectionToActivate: "up",
     modalType: "cvSummary",
+    cvSection: "summary",
   },
 };
 const bookcaseOne: CollisionObject = {
@@ -23,6 +24,7 @@ const bookcaseOne: CollisionObject = {
   interaction: {
     playerDirectionToActivate: "up",
     modalType: "skills",
+    cvSection: "skills",
   },
 };
 const bookcaseTwo: CollisionObject = {
@@ -34,6 +36,7 @@ const bookcaseTwo: CollisionObject = {
   interaction: {
     playerDirectionToActivate: "up",
     modalType: "skills",
+    cvSection: "skills",
   },
 };
 const kitchenCupboard: CollisionObject = {
@@ -45,6 +48,7 @@ const kitchenCupboard: CollisionObject = {
   interaction: {
     playerDirectionToActivate: "up",
     modalType: "skills",
+    cvSection: "skills",
   },
 };
 

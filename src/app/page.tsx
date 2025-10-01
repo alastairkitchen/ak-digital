@@ -3,11 +3,15 @@ import { Box, Button, Heading, Link, Text } from "@chakra-ui/react";
 import { GameCanvas } from "../features/game-canvas/GameCanvas";
 import { Counter } from "@/features/Counter";
 import { ReduxModalsContainer } from "@/features/redux-modals/ReduxModalsContainer";
-import { useOpenModal } from "@/features/redux-modals/useOpenModal";
+import {
+  useOpenDirectModal,
+  useOpenModal,
+} from "@/features/redux-modals/useOpenModal";
 
 export default function Home() {
   const { openModal: openCVSummaryModal } = useOpenModal("cvSummary");
   const { openModal: openSkillsModal } = useOpenModal("skills");
+  const { openModal } = useOpenDirectModal();
 
   return (
     <>
@@ -26,6 +30,9 @@ export default function Home() {
 
           <Button onClick={() => openCVSummaryModal()}>Summary</Button>
           <Button onClick={() => openSkillsModal()}>Technical Skills</Button>
+          <Button onClick={() => openModal("experience")}>Experience</Button>
+          <Button onClick={() => openModal("projects")}>projects</Button>
+          <Button onClick={() => openModal("education")}>education</Button>
 
           <Counter />
 

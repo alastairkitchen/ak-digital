@@ -2,9 +2,12 @@ import { useOpenDirectModal } from "@/features/redux-modals/useOpenModal";
 import { CollisionObject } from "../collision-objects";
 import { Player } from "../useSetupCanvas";
 import { wouldCollide } from "./would-collide";
+import { useDispatch } from "react-redux";
+import { setCvProgress } from "@/store/appSlice";
 
 export function useHandleInteraction() {
   const { openModal } = useOpenDirectModal();
+  const dispatch = useDispatch();
 
   const handleInteraction = (
     keys: Record<string, boolean>,
@@ -25,6 +28,7 @@ export function useHandleInteraction() {
           player.direction
       ) {
         openModal(collidingObject.interaction.modalType);
+        dispatch(setCvProgress(collidingObject.interaction.cvSection));
       }
     }
   };

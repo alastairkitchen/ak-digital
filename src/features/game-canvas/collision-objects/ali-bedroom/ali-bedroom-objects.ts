@@ -1,5 +1,6 @@
 import { COLLISION_ACTION_COLOUR, COLLISION_COLOUR, CollisionObject } from "..";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../../const";
+import { aliHouseInteractionObjects } from "../../interaction-objects/ali-house/ali-house-objects";
 import { changeScene, currentScene } from "../../useSetupCanvas";
 import { aliHouseCollisionObjects } from "../ali-house/ali-house-objects";
 
@@ -78,7 +79,14 @@ const aliBedroomExitDoor: CollisionObject = {
   height: 32,
   colour: COLLISION_ACTION_COLOUR,
   action: () =>
-    changeScene("ali-house", 100, 120, currentScene, aliHouseCollisionObjects),
+    changeScene(
+      "ali-house",
+      100,
+      120,
+      currentScene,
+      aliHouseCollisionObjects,
+      aliHouseInteractionObjects
+    ),
 };
 
 // Furniture ------------------------------------------

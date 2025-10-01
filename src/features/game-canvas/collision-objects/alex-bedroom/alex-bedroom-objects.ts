@@ -1,4 +1,5 @@
 import { COLLISION_ACTION_COLOUR, COLLISION_COLOUR, CollisionObject } from "..";
+import { alexHouseInteractionObjects } from "../../interaction-objects/alex-house/alex-house-objects";
 import { changeScene, currentScene } from "../../useSetupCanvas";
 import { alexHouseCollisionObjects } from "../alex-house/alex-house-objects";
 
@@ -138,7 +139,8 @@ const alexBedroomExitDoor: CollisionObject = {
       576,
       120,
       currentScene,
-      alexHouseCollisionObjects
+      alexHouseCollisionObjects,
+      alexHouseInteractionObjects
     ),
 };
 

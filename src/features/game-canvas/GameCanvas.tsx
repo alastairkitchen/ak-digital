@@ -12,6 +12,7 @@ import { FaCode } from "react-icons/fa6";
 import { LuGraduationCap } from "react-icons/lu";
 import { useSelector } from "react-redux";
 import { cvProgressSelector } from "@/store/appSlice";
+import { TextBox } from "./text-box/TextBox";
 
 export const GameCanvas: React.FC = () => {
   const { canvasRef, rect } = useSetupCanvas();
@@ -33,6 +34,7 @@ export const GameCanvas: React.FC = () => {
 
       <Box
         width={CANVAS_WIDTH}
+        position="relative"
         border="1px solid"
         borderColor="whiteAlpha.500"
         overflow="hidden"
@@ -44,6 +46,8 @@ export const GameCanvas: React.FC = () => {
           height={CANVAS_HEIGHT}
           width={CANVAS_WIDTH}
         ></canvas>
+
+        <TextBox />
 
         <Flex
           alignItems="center"

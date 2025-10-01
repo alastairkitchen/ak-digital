@@ -2,6 +2,8 @@ import { changeScene, currentScene } from "../../useSetupCanvas";
 import { alexHouseCollisionObjects } from "../alex-house/alex-house-objects";
 import { COLLISION_ACTION_COLOUR, COLLISION_COLOUR, CollisionObject } from "..";
 import { aliHouseCollisionObjects } from "../ali-house/ali-house-objects";
+import { aliHouseInteractionObjects } from "../../interaction-objects/ali-house/ali-house-objects";
+import { alexHouseInteractionObjects } from "../../interaction-objects/alex-house/alex-house-objects";
 
 // Bounds -----------------------------------------------
 
@@ -54,7 +56,14 @@ const aliHouseDoor: CollisionObject = {
   height: 40,
   colour: COLLISION_ACTION_COLOUR,
   action: () =>
-    changeScene("ali-house", 240, 500, currentScene, aliHouseCollisionObjects),
+    changeScene(
+      "ali-house",
+      240,
+      500,
+      currentScene,
+      aliHouseCollisionObjects,
+      aliHouseInteractionObjects
+    ),
 };
 
 const aliHouseBackDoor: CollisionObject = {
@@ -64,7 +73,14 @@ const aliHouseBackDoor: CollisionObject = {
   height: 29,
   colour: COLLISION_ACTION_COLOUR,
   action: () =>
-    changeScene("ali-house", 574, 120, currentScene, aliHouseCollisionObjects),
+    changeScene(
+      "ali-house",
+      574,
+      120,
+      currentScene,
+      aliHouseCollisionObjects,
+      aliHouseInteractionObjects
+    ),
 };
 
 const signAliHouse: CollisionObject = {
@@ -97,7 +113,8 @@ const alexHouseDoor: CollisionObject = {
       338,
       455,
       currentScene,
-      alexHouseCollisionObjects
+      alexHouseCollisionObjects,
+      alexHouseInteractionObjects
     ),
 };
 
@@ -108,7 +125,14 @@ const alexHouseBackDoor: CollisionObject = {
   height: 36,
   colour: COLLISION_ACTION_COLOUR,
   action: () =>
-    changeScene("alex-house", 98, 135, currentScene, alexHouseCollisionObjects),
+    changeScene(
+      "alex-house",
+      98,
+      135,
+      currentScene,
+      alexHouseCollisionObjects,
+      alexHouseInteractionObjects
+    ),
 };
 
 const signAlexHouse: CollisionObject = {

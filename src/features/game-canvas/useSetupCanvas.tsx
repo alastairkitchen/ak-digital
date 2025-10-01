@@ -3,9 +3,9 @@ import { useUpdatePlayer } from "./utils/useUpdatePlayer";
 import { useDrawerPlayer } from "./utils/useDrawerPlayer";
 import { CollisionObject } from "./collision-objects";
 import { COLLISION_DEBUG } from "./const";
-import { aliHouseCollisionObjects } from "./collision-objects/ali-house/ali-house-objects";
-import { aliHouseInteractionObjects } from "./interaction-objects/ali-house/ali-house-objects";
 import { useHandleInteraction } from "./utils/useHandleInteraction";
+import { malletTownCollisionObjects } from "./collision-objects/mallet-town/mallet-town-objects";
+import { malletTownInteractionObjects } from "./interaction-objects/mallet-town/mallet-town-objects";
 
 type Rectangle = {
   x: number;
@@ -43,6 +43,12 @@ type CurrentScene = {
   scene: Scene;
 };
 
+type GameMode = "game" | "text-box";
+
+type CurrentGameMode = {
+  mode: GameMode;
+};
+
 export type PlayerDirection = "up" | "down" | "left" | "right" | "idle";
 
 export let player: Player = {
@@ -61,7 +67,8 @@ export const changeScene = (
   playerX: number,
   playerY: number,
   currentScene: CurrentScene,
-  intendedCollisionObjects: CollisionObject[]
+  intendedCollisionObjects: CollisionObject[],
+  intendedInteractionObjects: CollisionObject[]
 ) => {
   currentScene.scene = intendedScene;
   player.x = playerX;
@@ -69,6 +76,7 @@ export const changeScene = (
   player.dx = 0;
   player.dy = 0;
   collisionObjects = intendedCollisionObjects;
+  interactionObjects = intendedInteractionObjects;
 };
 
 function drawCollisionObjects(ctx: CanvasRenderingContext2D) {
@@ -87,8 +95,9 @@ function drawInteractionObjects(ctx: CanvasRenderingContext2D) {
 
 export let collisionObjects: CollisionObject[] = [];
 export let interactionObjects: CollisionObject[] = [];
-// export let currentScene: CurrentScene = { scene: "mallet-town" };
-export let currentScene: CurrentScene = { scene: "ali-house" };
+export let currentScene: CurrentScene = { scene: "mallet-town" };
+export let currentGameMode: CurrentGameMode = { mode: "game" };
+// export let currentScene: CurrentScene = { scene: "alex-bedroom" };
 
 export const useSetupCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -286,9 +295,11 @@ export const useSetupCanvas = () => {
     const alexBedroomImg = new Image();
     alexBedroomImg.src = "/alex-bedroom.png";
 
-    // collisionObjects.push(...malletTownCollisionObjects);
-    collisionObjects.push(...aliHouseCollisionObjects);
-    interactionObjects.push(...aliHouseInteractionObjects);
+    collisionObjects.push(...malletTownCollisionObjects);
+    interactionObjects.push(...malletTownInteractionObjects);
+
+    // collisionObjects.push(...alexBedroomCollisionObjects);
+    // interactionObjects.push(...alexBedroomInteractionObjects);
 
     const keys: Record<string, boolean> = {};
 
@@ -353,6 +364,7 @@ export const useSetupCanvas = () => {
       drawBackground();
       updatePlayer(canvas, keys, player, collisionObjects);
       handleInteraction(keys, player, interactionObjects);
+      // handleTextBox();
       drawPlayer(ctx, keys, player);
       drawCollisionObjects(ctx);
       drawInteractionObjects(ctx);

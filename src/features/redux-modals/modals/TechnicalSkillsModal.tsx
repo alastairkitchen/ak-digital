@@ -6,7 +6,7 @@ export const TechnicalSkillsModal: React.FC<
   ComponentProps<typeof SharedDialog>
 > = ({ open, onClose }) => {
   return (
-    <SharedDialog open={open} onClose={onClose} title="Professional Summary">
+    <SharedDialog open={open} onClose={onClose} title="Technical Skills">
       <Stack gap={5}>
         <Text>
           <Box as="span" fontWeight="bold">

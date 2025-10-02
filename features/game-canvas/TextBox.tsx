@@ -235,26 +235,3 @@ export const TextBox = () => {
     </Box>
   );
 };
-
-const TriangleDownButton: React.FC<{ ref: any; handleOnClick: () => void }> = ({
-  ref,
-  handleOnClick,
-}) => {
-  return (
-    <Button
-      ref={ref}
-      position="absolute"
-      bottom="5px"
-      right="5px"
-      width="30px"
-      height="30px"
-      minW="0"
-      p={0}
-      onClick={handleOnClick}
-    >
-      <Icon>
-        <IoCaretDownSharp size="20px" />
-      </Icon>
-    </Button>
-  );
-};

@@ -34,7 +34,7 @@ const ProgressItem: React.FC<FlexProps & { active?: boolean }> = ({
   );
 };
 
-export const ProgressBanner: React.FC = () => {
+export const ProgressBanner: React.FC<FlexProps> = (props) => {
   const cvProgress = useSelector(cvProgressSelector);
   return (
     <Flex
@@ -44,6 +44,7 @@ export const ProgressBanner: React.FC = () => {
       gap={2}
       px={4}
       color="black"
+      {...props}
     >
       <Box>
         <Image

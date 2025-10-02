@@ -6,22 +6,27 @@ import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./const";
 import { Box } from "@chakra-ui/react";
 import { TextBox } from "./TextBox";
 import { ProgressBanner } from "./ProgressBanner";
+import { useSelector } from "react-redux";
+import { gameModeSelector } from "@/store/appSlice";
 
 export const GameCanvas: React.FC = () => {
   const { canvasRef, rect } = useSetupCanvas();
   const [update, setUpdate] = useState(true);
+  const gameMode = useSelector(gameModeSelector);
 
   return (
     <>
-      <div>{player.x}</div>
-      <div>{player.y}</div>
+      <Box inert={true}>
+        <div>{player.x}</div>
+        <div>{player.y}</div>
 
-      <p className="mt-2">
-        <strong>Rectangle:</strong> x: {Math.round(rect.x)}, y:{" "}
-        {Math.round(rect.y)}, width: {Math.round(rect.width)}, height:{" "}
-        {Math.round(rect.height)}
-      </p>
-      <button onClick={() => setUpdate(!update)}>update</button>
+        <p className="mt-2">
+          <strong>Rectangle:</strong> x: {Math.round(rect.x)}, y:{" "}
+          {Math.round(rect.y)}, width: {Math.round(rect.width)}, height:{" "}
+          {Math.round(rect.height)}
+        </p>
+        <button onClick={() => setUpdate(!update)}>update</button>
+      </Box>
 
       <Box
         width={CANVAS_WIDTH}
@@ -39,7 +44,7 @@ export const GameCanvas: React.FC = () => {
         ></canvas>
 
         <TextBox />
-        <ProgressBanner />
+        <ProgressBanner inert={gameMode === "text-box"} />
       </Box>
     </>
   );

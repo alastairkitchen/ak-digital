@@ -8,6 +8,7 @@ export const COLLISION_INTERACTION_COLOUR = "transparent";
 type Interaction = {
   playerDirectionToActivate: PlayerDirection;
   modalType: ModalType;
+  textBoxHeader: string;
   textBoxContent: string;
   cvSection: CvSection;
 };

@@ -1,4 +1,4 @@
-import { CvSection, ModalType } from "@/store/appSlice";
+import { CvSection, ModalType } from "../../../store/appSlice";
 import { PlayerDirection } from "../useSetupCanvas";
 
 export const COLLISION_ACTION_COLOUR = "transparent";

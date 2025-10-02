@@ -1,12 +1,12 @@
 "use client";
 import { Box, Button, Heading, Link, Text } from "@chakra-ui/react";
 import { GameCanvas } from "../features/game-canvas/GameCanvas";
-import { Counter } from "@/features/Counter";
-import { ReduxModalsContainer } from "@/features/redux-modals/ReduxModalsContainer";
+import { Counter } from "../features/Counter";
+import { ReduxModalsContainer } from "../features/redux-modals/ReduxModalsContainer";
 import {
   useOpenDirectModal,
   useOpenModal,
-} from "@/features/redux-modals/useOpenModal";
+} from "../features/redux-modals/useOpenModal";
 
 export default function Home() {
   const { openModal: openCVSummaryModal } = useOpenModal("cvSummary");

@@ -1,5 +1,5 @@
 "use client";
-import { Provider } from "@/features/chakra/provider";
+import { Provider } from "../features/chakra/provider";
 import { store } from "../store";
 import { Provider as ReduxProvider } from "react-redux";
 

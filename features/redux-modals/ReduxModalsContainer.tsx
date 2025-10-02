@@ -1,7 +1,7 @@
 "use client";
 import { useSelector } from "react-redux";
 import { CvSummaryModal } from "./modals/CvSummaryModal";
-import { currentOpenModalSelector } from "@/store/appSlice";
+import { currentOpenModalSelector } from "../../store/appSlice";
 import { useOpenModal } from "./useOpenModal";
 import { TechnicalSkillsModal } from "./modals/TechnicalSkillsModal";
 import { ProfessionalExperienceModal } from "./modals/ProfessionalExperienceModal";

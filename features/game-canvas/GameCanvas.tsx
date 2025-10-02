@@ -11,7 +11,7 @@ import { TbTie } from "react-icons/tb";
 import { FaCode } from "react-icons/fa6";
 import { LuGraduationCap } from "react-icons/lu";
 import { useSelector } from "react-redux";
-import { cvProgressSelector } from "@/store/appSlice";
+import { cvProgressSelector } from "../../store/appSlice";
 import { TextBox } from "./text-box/TextBox";
 
 export const GameCanvas: React.FC = () => {

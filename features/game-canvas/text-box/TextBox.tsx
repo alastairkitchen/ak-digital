@@ -1,4 +1,4 @@
-import { textBoxIsOpenSelector } from "@/store/appSlice";
+import { textBoxIsOpenSelector } from "../../../store/appSlice";
 import { Box, Icon, Text } from "@chakra-ui/react";
 import { IoCaretDownSharp } from "react-icons/io5";
 import { useSelector } from "react-redux";

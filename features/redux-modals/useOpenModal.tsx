@@ -1,4 +1,4 @@
-import { closeAppModal, ModalType, openAppModal } from "@/store/appSlice";
+import { closeAppModal, ModalType, openAppModal } from "../../store/appSlice";
 import { useDispatch } from "react-redux";
 
 export const useOpenModal = (modalType: ModalType) => {

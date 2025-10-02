@@ -1,9 +1,9 @@
-import { useOpenDirectModal } from "@/features/redux-modals/useOpenModal";
+import { useOpenDirectModal } from "../../redux-modals/useOpenModal";
 import { CollisionObject } from "../collision-objects";
 import { currentGameMode, Player } from "../useSetupCanvas";
 import { wouldCollide } from "./would-collide";
 import { useDispatch } from "react-redux";
-import { openTextBox } from "@/store/appSlice";
+import { openTextBox } from "../../../store/appSlice";
 
 export function useHandleInteraction() {
   const { openModal } = useOpenDirectModal();

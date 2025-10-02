@@ -13,6 +13,7 @@ const computer: CollisionObject = {
     playerDirectionToActivate: "up",
     modalType: "education",
     cvSection: "education",
+    textBoxContent: "This is a computer. It contains my education details.",
   },
 };
 
@@ -26,6 +27,7 @@ const bookshelf: CollisionObject = {
     playerDirectionToActivate: "up",
     modalType: "skills",
     cvSection: "skills",
+    textBoxContent: "This is a bookshelf. It contains my skills.",
   },
 };
 

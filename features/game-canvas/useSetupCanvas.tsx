@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { useUpdatePlayer } from "./utils/useUpdatePlayer";
-import { useDrawerPlayer } from "./utils/useDrawerPlayer";
 import { CollisionObject } from "./collision-objects";
 import { COLLISION_DEBUG } from "./const";
 import { useHandleInteraction } from "./utils/useHandleInteraction";
 import { malletTownCollisionObjects } from "./collision-objects/mallet-town/mallet-town-objects";
 import { malletTownInteractionObjects } from "./interaction-objects/mallet-town/mallet-town-objects";
+import { useDrawerPlayer } from "./utils/useDrawerPlayer";
+import { GameMode, gameModeSelector } from "@/store/appSlice";
+import { useSelector } from "react-redux";
 
 type Rectangle = {
   x: number;
@@ -41,12 +43,6 @@ type Scene =
 
 type CurrentScene = {
   scene: Scene;
-};
-
-type GameMode = "game" | "text-box";
-
-type CurrentGameMode = {
-  mode: GameMode;
 };
 
 export type PlayerDirection = "up" | "down" | "left" | "right" | "idle";
@@ -93,10 +89,15 @@ function drawInteractionObjects(ctx: CanvasRenderingContext2D) {
   });
 }
 
+type CurrentGameMode = {
+  mode: GameMode;
+};
+
 export let collisionObjects: CollisionObject[] = [];
 export let interactionObjects: CollisionObject[] = [];
 export let currentScene: CurrentScene = { scene: "mallet-town" };
 export let currentGameMode: CurrentGameMode = { mode: "game" };
+
 // export let currentScene: CurrentScene = { scene: "alex-bedroom" };
 
 export const useSetupCanvas = () => {
@@ -104,6 +105,11 @@ export const useSetupCanvas = () => {
   const { drawPlayer } = useDrawerPlayer();
   const { updatePlayer } = useUpdatePlayer();
   const { handleInteraction } = useHandleInteraction();
+  const gameMode = useSelector(gameModeSelector);
+
+  useEffect(() => {
+    currentGameMode.mode = gameMode;
+  }, [gameMode]);
 
   const [rect, setRect] = useState<Rectangle>({
     x: 150,

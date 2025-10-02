@@ -13,6 +13,7 @@ const tableBook: CollisionObject = {
     playerDirectionToActivate: "up",
     modalType: "cvSummary",
     cvSection: "summary",
+    textBoxContent: "This is a book on the table. It contains my CV summary.",
   },
 };
 const bookcaseOne: CollisionObject = {
@@ -25,6 +26,7 @@ const bookcaseOne: CollisionObject = {
     playerDirectionToActivate: "up",
     modalType: "skills",
     cvSection: "skills",
+    textBoxContent: "This is a bookcase. It contains my skills.",
   },
 };
 const bookcaseTwo: CollisionObject = {
@@ -37,6 +39,7 @@ const bookcaseTwo: CollisionObject = {
     playerDirectionToActivate: "up",
     modalType: "skills",
     cvSection: "skills",
+    textBoxContent: "This is a bookcase. It contains my skills.",
   },
 };
 const kitchenCupboard: CollisionObject = {
@@ -49,6 +52,7 @@ const kitchenCupboard: CollisionObject = {
     playerDirectionToActivate: "up",
     modalType: "skills",
     cvSection: "skills",
+    textBoxContent: "This is a cupboard. It contains my skills.",
   },
 };
 

@@ -1,5 +1,10 @@
 "use client";
-import { player, PlayerDirection, type Player } from "../useSetupCanvas";
+import {
+  currentGameMode,
+  player,
+  PlayerDirection,
+  type Player,
+} from "../useSetupCanvas";
 
 const characterUp1 = new Image();
 characterUp1.src = "http://localhost:3000/character-sprites/up-1.png";
@@ -50,6 +55,17 @@ export const useDrawerPlayer = () => {
     player: Player
   ) => {
     if (!ctx) return;
+
+    if (currentGameMode.mode !== "game") {
+      ctx.drawImage(
+        currentCharacter,
+        player.x,
+        player.y,
+        player.size,
+        player.size
+      );
+      return;
+    }
 
     if (player.direction !== lastDirection) {
       startXPosition = player.x;

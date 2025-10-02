@@ -1,12 +1,10 @@
-import { useOpenDirectModal } from "../../redux-modals/useOpenModal";
 import { CollisionObject } from "../collision-objects";
-import { currentGameMode, Player } from "../useSetupCanvas";
+import { Player } from "../useSetupCanvas";
 import { wouldCollide } from "./would-collide";
 import { useDispatch } from "react-redux";
 import { openTextBox } from "../../../store/appSlice";
 
 export function useHandleInteraction() {
-  const { openModal } = useOpenDirectModal();
   const dispatch = useDispatch();
 
   const handleInteraction = (
@@ -27,12 +25,12 @@ export function useHandleInteraction() {
         collidingObject.interaction?.playerDirectionToActivate ===
           player.direction
       ) {
-        dispatch(openTextBox());
-        currentGameMode.mode = "text-box";
-
-        // openTextBox(text, readMore: () => {
-        //   openModal(collidingObject.interaction.modalType);
-        // })
+        dispatch(
+          openTextBox({
+            content: collidingObject.interaction.textBoxContent,
+            modalType: collidingObject.interaction.modalType || null,
+          })
+        );
 
         // dispatch(setCvProgress(collidingObject.interaction.cvSection));
       }

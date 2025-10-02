@@ -13,6 +13,7 @@ const computer: CollisionObject = {
     playerDirectionToActivate: "up",
     modalType: "experience",
     cvSection: "experience",
+    textBoxContent: "TODO",
   },
 };
 
@@ -26,6 +27,7 @@ const pizza: CollisionObject = {
     playerDirectionToActivate: "right",
     modalType: "experience", // TODO add common
     cvSection: "experience",
+    textBoxContent: "TODO",
   },
 };
 
@@ -39,6 +41,7 @@ const bookShelf: CollisionObject = {
     playerDirectionToActivate: "up",
     modalType: "skills",
     cvSection: "skills",
+    textBoxContent: "TODO",
   },
 };
 

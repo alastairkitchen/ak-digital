@@ -13,6 +13,7 @@ const bookOneTop: CollisionObject = {
     playerDirectionToActivate: "down",
     modalType: "projects",
     cvSection: "projects",
+    textBoxContent: "This is a book. It contains my projects.",
   },
 };
 
@@ -26,6 +27,7 @@ const bookTwoTop: CollisionObject = {
     playerDirectionToActivate: "down",
     modalType: "projects",
     cvSection: "projects",
+    textBoxContent: "This is a book. It contains my projects.",
   },
 };
 
@@ -39,6 +41,7 @@ const bookTwoSide: CollisionObject = {
     playerDirectionToActivate: "left",
     modalType: "projects",
     cvSection: "projects",
+    textBoxContent: "This is a book. It contains my projects.",
   },
 };
 
@@ -52,6 +55,7 @@ const bookThreeTop: CollisionObject = {
     playerDirectionToActivate: "down",
     modalType: "projects",
     cvSection: "projects",
+    textBoxContent: "This is a book. It contains my projects.",
   },
 };
 
@@ -65,6 +69,7 @@ const bookThreeSide: CollisionObject = {
     playerDirectionToActivate: "right",
     modalType: "projects",
     cvSection: "projects",
+    textBoxContent: "This is a book. It contains my projects.",
   },
 };
 
@@ -78,6 +83,7 @@ const bookFourTop: CollisionObject = {
     playerDirectionToActivate: "down",
     modalType: "projects",
     cvSection: "projects",
+    textBoxContent: "This is a book. It contains my projects.",
   },
 };
 
@@ -91,6 +97,7 @@ const bookShelfLeft: CollisionObject = {
     playerDirectionToActivate: "up",
     modalType: "skills",
     cvSection: "skills",
+    textBoxContent: "This is a bookshelf. It contains my skills.",
   },
 };
 
@@ -104,6 +111,7 @@ const bookShelfRight: CollisionObject = {
     playerDirectionToActivate: "up",
     modalType: "skills",
     cvSection: "skills",
+    textBoxContent: "This is a bookshelf. It contains my skills.",
   },
 };
 

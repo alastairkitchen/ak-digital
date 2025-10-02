@@ -1,5 +1,5 @@
 import { CollisionObject } from "../collision-objects";
-import { Player } from "../useSetupCanvas";
+import { currentGameMode, Player } from "../useSetupCanvas";
 import { wouldCollide } from "./would-collide";
 
 export const useUpdatePlayer = () => {
@@ -9,7 +9,7 @@ export const useUpdatePlayer = () => {
     player: Player,
     collisionObjects: CollisionObject[]
   ) => {
-    if (!canvas) return;
+    if (!canvas || currentGameMode.mode !== "game") return;
 
     player.dx = 0;
     player.dy = 0;

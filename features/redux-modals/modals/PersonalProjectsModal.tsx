@@ -1,12 +1,21 @@
 import { ComponentProps } from "react";
 import { SharedDialog } from "../../shared";
 import { Heading, Link, Text } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
+import { closeTextBox } from "@/store/appSlice";
 
 export const PersonalProjectsModal: React.FC<
   ComponentProps<typeof SharedDialog>
 > = ({ open, onClose }) => {
+  const dispatch = useDispatch();
+
+  const handleOnClose = () => {
+    dispatch(closeTextBox());
+    onClose();
+  };
+
   return (
-    <SharedDialog open={open} onClose={onClose} title="Personal Projects">
+    <SharedDialog open={open} onClose={handleOnClose} title="Personal Projects">
       <Heading as="h3">
         Suzanne Wright Photographer -{" "}
         <Link href="https://suzannewrightphotographer.co.uk">

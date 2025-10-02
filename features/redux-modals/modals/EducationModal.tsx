@@ -1,13 +1,22 @@
 import { ComponentProps } from "react";
 import { SharedDialog } from "../../shared";
 import { Heading, List, Text } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
+import { closeTextBox } from "@/store/appSlice";
 
 export const EducationModal: React.FC<ComponentProps<typeof SharedDialog>> = ({
   open,
   onClose,
 }) => {
+  const dispatch = useDispatch();
+
+  const handleOnClose = () => {
+    dispatch(closeTextBox());
+    onClose();
+  };
+
   return (
-    <SharedDialog open={open} onClose={onClose} title="Education">
+    <SharedDialog open={open} onClose={handleOnClose} title="Education">
       <Heading as="h3">Leeds Beckett University</Heading>
       <Text fontWeight="bold">BSc Hons in Multimedia Technology (2:1)</Text>
 

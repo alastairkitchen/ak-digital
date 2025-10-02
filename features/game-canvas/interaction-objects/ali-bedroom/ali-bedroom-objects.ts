@@ -13,8 +13,9 @@ const computer: CollisionObject = {
     playerDirectionToActivate: "up",
     modalType: "experience",
     cvSection: "experience",
-    textBoxHeader: "To Do",
-    textBoxContent: "TODO",
+    textBoxHeader: "Professional Experience",
+    textBoxContent:
+      "React Developer - Serial Affinity (Jan 2023 - Sept 2025), Developing scalable, reusable web components for an entertainment client, supporting both an internal admin dashboard and a customer-facing payment platform. Collaborating with cross-functional teams and leveraging modern frameworks to create efficient and maintainable features.",
   },
 };
 
@@ -26,10 +27,10 @@ const pizza: CollisionObject = {
   colour: COLLISION_INTERACTION_COLOUR,
   interaction: {
     playerDirectionToActivate: "right",
-    modalType: "experience", // TODO add common
-    cvSection: "experience",
-    textBoxHeader: "To Do",
-    textBoxContent: "TODO",
+    modalType: null,
+    cvSection: null,
+    textBoxHeader: null,
+    textBoxContent: "Ali's left over pizza, yum pinapple!",
   },
 };
 
@@ -43,8 +44,9 @@ const bookShelf: CollisionObject = {
     playerDirectionToActivate: "up",
     modalType: "skills",
     cvSection: "skills",
-    textBoxHeader: "To Do",
-    textBoxContent: "TODO",
+    textBoxHeader: "Technical Skills",
+    textBoxContent:
+      "Frontend: HTML, CSS, Sass, JavaScript (ES6+), TypeScript, React, Redux, Next.js, React Query, React Hook Form",
   },
 };
 

@@ -37,7 +37,7 @@ export const SharedDialog: React.FC<SharedDialogProps> = ({
                 <Button variant="outline">close</Button>
               </Dialog.ActionTrigger>
             </Dialog.Footer>
-            <Dialog.CloseTrigger>
+            <Dialog.CloseTrigger asChild>
               <CloseButton size="sm" onClick={onClose} />
             </Dialog.CloseTrigger>
           </Dialog.Content>

@@ -15,7 +15,7 @@ const tableBook: CollisionObject = {
     cvSection: "summary",
     textBoxHeader: "Professional Summary",
     textBoxContent:
-      "A web developer with 9 years of experience in frontend development, specializing in React, Next.js, and modern JavaScript frameworks.",
+      "A web developer with 9 years of experience in frontend development, specializing in React, Next.js, and modern JavaScript frameworks. ",
   },
 };
 const bookcaseOne: CollisionObject = {
@@ -28,8 +28,9 @@ const bookcaseOne: CollisionObject = {
     playerDirectionToActivate: "up",
     modalType: "skills",
     cvSection: "skills",
-    textBoxHeader: "To Do",
-    textBoxContent: "This is a bookcase. It contains my skills.",
+    textBoxHeader: "Technical Skills",
+    textBoxContent:
+      "Frontend: HTML, CSS, Sass, JavaScript (ES6+), TypeScript, React, Redux, Next.js, React Query, React Hook Form",
   },
 };
 const bookcaseTwo: CollisionObject = {
@@ -42,8 +43,9 @@ const bookcaseTwo: CollisionObject = {
     playerDirectionToActivate: "up",
     modalType: "skills",
     cvSection: "skills",
-    textBoxHeader: "To Do",
-    textBoxContent: "This is a bookcase. It contains my skills.",
+    textBoxHeader: "Technical Skills",
+    textBoxContent:
+      "Frontend: HTML, CSS, Sass, JavaScript (ES6+), TypeScript, React, Redux, Next.js, React Query, React Hook Form",
   },
 };
 const kitchenCupboard: CollisionObject = {
@@ -54,10 +56,11 @@ const kitchenCupboard: CollisionObject = {
   colour: COLLISION_INTERACTION_COLOUR,
   interaction: {
     playerDirectionToActivate: "up",
-    modalType: "skills",
-    cvSection: "skills",
-    textBoxHeader: "To Do",
-    textBoxContent: "This is a cupboard. It contains my skills.",
+    cvSection: null,
+    textBoxHeader: null,
+    textBoxContent:
+      "This is a cupboard. You can see kitchen utensils and cooking equipment inside.",
+    modalType: null,
   },
 };
 

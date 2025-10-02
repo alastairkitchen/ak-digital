@@ -96,9 +96,8 @@ type CurrentGameMode = {
 export let collisionObjects: CollisionObject[] = [];
 export let interactionObjects: CollisionObject[] = [];
 export let currentScene: CurrentScene = { scene: "mallet-town" };
-export let currentGameMode: CurrentGameMode = { mode: "game" };
-
 // export let currentScene: CurrentScene = { scene: "alex-bedroom" };
+export let currentGameMode: CurrentGameMode = { mode: "game" };
 
 export const useSetupCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);

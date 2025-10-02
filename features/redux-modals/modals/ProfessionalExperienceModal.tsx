@@ -1,12 +1,25 @@
 import { ComponentProps } from "react";
 import { SharedDialog } from "../../shared";
 import { Box, Heading, List, Text } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
+import { closeTextBox } from "@/store/appSlice";
 
 export const ProfessionalExperienceModal: React.FC<
   ComponentProps<typeof SharedDialog>
 > = ({ open, onClose }) => {
+  const dispatch = useDispatch();
+
+  const handleOnClose = () => {
+    dispatch(closeTextBox());
+    onClose();
+  };
+
   return (
-    <SharedDialog open={open} onClose={onClose} title="Professional Experience">
+    <SharedDialog
+      open={open}
+      onClose={handleOnClose}
+      title="Professional Experience"
+    >
       <Box>
         <Box mb={8}>
           <Heading as="h3" size="md" mb={2}>

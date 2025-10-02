@@ -2,7 +2,7 @@ import { CollisionObject } from "../collision-objects";
 import { Player } from "../useSetupCanvas";
 import { wouldCollide } from "./would-collide";
 import { useDispatch } from "react-redux";
-import { openTextBox } from "../../../store/appSlice";
+import { openTextBox, setCvProgress } from "../../../store/appSlice";
 
 export function useHandleInteraction() {
   const dispatch = useDispatch();
@@ -27,12 +27,14 @@ export function useHandleInteraction() {
       ) {
         dispatch(
           openTextBox({
+            header: collidingObject.interaction.textBoxHeader,
             content: collidingObject.interaction.textBoxContent,
-            modalType: collidingObject.interaction.modalType || null,
+            modalType: collidingObject.interaction.modalType,
           })
         );
-
-        // dispatch(setCvProgress(collidingObject.interaction.cvSection));
+        if (collidingObject.interaction.cvSection !== null) {
+          dispatch(setCvProgress(collidingObject.interaction.cvSection));
+        }
       }
     }
   };

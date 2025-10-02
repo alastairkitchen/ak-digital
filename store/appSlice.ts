@@ -21,18 +21,24 @@ export interface AppState {
   currentOpenModal: ModalType | null;
   cvProgress: CvSection[];
   textBoxIsOpen: boolean;
-  textBoxContent: string;
+  textBoxHeader: string | null;
+  textBoxContent: string | null;
   textBoxModal: ModalType | null;
+  textBoxCurrentChunkIndex: number;
   gameMode: GameMode;
+  congratsMessageShown: boolean;
 }
 
 const initialState: AppState = {
   currentOpenModal: null,
   cvProgress: [],
   textBoxIsOpen: false,
+  textBoxHeader: "",
   textBoxContent: "",
   textBoxModal: null,
   gameMode: "game",
+  congratsMessageShown: false,
+  textBoxCurrentChunkIndex: 0,
 };
 
 export const appSlice = createSlice({
@@ -54,10 +60,15 @@ export const appSlice = createSlice({
     },
     openTextBox: (
       state,
-      action: PayloadAction<{ content: string; modalType: ModalType | null }>
+      action: PayloadAction<{
+        header: string | null;
+        content: string | null;
+        modalType: ModalType | null;
+      }>
     ) => {
       state.gameMode = "text-box";
       state.textBoxIsOpen = true;
+      state.textBoxHeader = action.payload.header;
       state.textBoxContent = action.payload.content;
       state.textBoxModal = action.payload.modalType;
     },
@@ -66,6 +77,13 @@ export const appSlice = createSlice({
       state.textBoxIsOpen = false;
       state.textBoxContent = "";
       state.textBoxModal = null;
+      state.textBoxCurrentChunkIndex = 0;
+    },
+    setCongratsMessageShown: (state) => {
+      state.congratsMessageShown = true;
+    },
+    setTextBoxCurrentChunkIndex: (state, action: PayloadAction<number>) => {
+      state.textBoxCurrentChunkIndex = action.payload;
     },
   },
 });
@@ -77,6 +95,8 @@ export const {
   openTextBox,
   closeTextBox,
   setGameMode,
+  setCongratsMessageShown,
+  setTextBoxCurrentChunkIndex,
 } = appSlice.actions;
 
 export const currentOpenModalSelector: (
@@ -89,8 +109,13 @@ export const cvProgressSelector: (state: RootState) => CvSection[] = (state) =>
 export const textBoxIsOpenSelector: (state: RootState) => boolean = (state) =>
   state.app.textBoxIsOpen;
 
-export const textBoxContentSelector: (state: RootState) => string = (state) =>
-  state.app.textBoxContent;
+export const textBoxHeaderSelector: (state: RootState) => string | null = (
+  state
+) => state.app.textBoxHeader;
+
+export const textBoxContentSelector: (state: RootState) => string | null = (
+  state
+) => state.app.textBoxContent;
 
 export const textBoxModalSelector: (state: RootState) => ModalType | null = (
   state
@@ -98,5 +123,13 @@ export const textBoxModalSelector: (state: RootState) => ModalType | null = (
 
 export const gameModeSelector: (state: RootState) => GameMode = (state) =>
   state.app.gameMode;
+
+export const congratsMessageShownSelector: (state: RootState) => boolean = (
+  state
+) => state.app.congratsMessageShown;
+
+export const textBoxCurrentChunkIndexSelector: (state: RootState) => number = (
+  state
+) => state.app.textBoxCurrentChunkIndex;
 
 export default appSlice.reducer;

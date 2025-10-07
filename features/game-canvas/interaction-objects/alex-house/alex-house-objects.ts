@@ -13,8 +13,9 @@ const bookOneTop: CollisionObject = {
     playerDirectionToActivate: "down",
     modalType: "projects",
     cvSection: "projects",
-    textBoxHeader: "To Do",
-    textBoxContent: "This is a book. It contains my projects.",
+    textBoxHeader: "Suzanne Wright Photographer",
+    textBoxContent:
+      "A photography portfolio website showcasing the work of Suzanne Wright. Designed to present her photos in a visually appealing and interactive format. Technologies Used: Gatsby, Netlify CMS, GraphQL, React, Sass, Sketch design. Website is currently live with placeholder content.",
   },
 };
 
@@ -28,8 +29,9 @@ const bookTwoTop: CollisionObject = {
     playerDirectionToActivate: "down",
     modalType: "projects",
     cvSection: "projects",
-    textBoxHeader: "To Do",
-    textBoxContent: "This is a book. It contains my projects.",
+    textBoxHeader: "Catherine Robertson Counselling",
+    textBoxContent:
+      "A website for Catherine Robertson's counselling service, providing potential clients with detailed information and service offerings. Technologies Used: Next.js, Sass, Javascript, React.",
   },
 };
 
@@ -43,8 +45,9 @@ const bookTwoSide: CollisionObject = {
     playerDirectionToActivate: "left",
     modalType: "projects",
     cvSection: "projects",
-    textBoxHeader: "To Do",
-    textBoxContent: "This is a book. It contains my projects.",
+    textBoxHeader: "Catherine Robertson Counselling",
+    textBoxContent:
+      "A website for Catherine Robertson's counselling service, providing potential clients with detailed information and service offerings. Technologies Used: Next.js, Sass, Javascript, React.",
   },
 };
 
@@ -58,8 +61,9 @@ const bookThreeTop: CollisionObject = {
     playerDirectionToActivate: "down",
     modalType: "projects",
     cvSection: "projects",
-    textBoxHeader: "To Do",
-    textBoxContent: "This is a book. It contains my projects.",
+    textBoxHeader: "Rick and Morty App",
+    textBoxContent:
+      "A web app created to display information about characters and episodes of an American cartoon called Rick and Morty. Technologies used: React, React Router, Typescript, Sass, Rick and morty app.",
   },
 };
 
@@ -73,8 +77,9 @@ const bookThreeSide: CollisionObject = {
     playerDirectionToActivate: "right",
     modalType: "projects",
     cvSection: "projects",
-    textBoxHeader: "To Do",
-    textBoxContent: "This is a book. It contains my projects.",
+    textBoxHeader: "Rick and Morty App",
+    textBoxContent:
+      "A web app created to display information about characters and episodes of an American cartoon called Rick and Morty. Technologies used: React, React Router, Typescript, Sass, Rick and morty app.",
   },
 };
 
@@ -88,8 +93,9 @@ const bookFourTop: CollisionObject = {
     playerDirectionToActivate: "down",
     modalType: "projects",
     cvSection: "projects",
-    textBoxHeader: "To Do",
-    textBoxContent: "This is a book. It contains my projects.",
+    textBoxHeader: "AK Digital Game",
+    textBoxContent:
+      "A game built from scratch to demonstrate front-end development skills. Developed entirely without game libraries, using React, TypeScript, and HTML5 Canvas to handle rendering, game logic, and state management.",
   },
 };
 
@@ -101,10 +107,10 @@ const bookShelfLeft: CollisionObject = {
   colour: COLLISION_INTERACTION_COLOUR,
   interaction: {
     playerDirectionToActivate: "up",
-    modalType: "skills",
-    cvSection: "skills",
-    textBoxHeader: "To Do",
-    textBoxContent: "This is a bookshelf. It contains my skills.",
+    modalType: null,
+    cvSection: null,
+    textBoxHeader: null,
+    textBoxContent: "A bookshelf packed full of Alex's favourite books.",
   },
 };
 
@@ -118,8 +124,133 @@ const bookShelfRight: CollisionObject = {
     playerDirectionToActivate: "up",
     modalType: "skills",
     cvSection: "skills",
-    textBoxHeader: "To Do",
-    textBoxContent: "This is a bookshelf. It contains my skills.",
+    textBoxHeader: "Technical Skills",
+    textBoxContent:
+      "Frontend: HTML, CSS, Sass, JavaScript (ES6+), TypeScript, React, Redux, Next.js, React Query, React Hook Form",
+  },
+};
+
+const fireplace: CollisionObject = {
+  x: 228,
+  y: 95,
+  width: 56,
+  height: 31,
+  colour: COLLISION_INTERACTION_COLOUR,
+  interaction: {
+    playerDirectionToActivate: "up",
+    modalType: null,
+    cvSection: null,
+    textBoxHeader: null,
+    textBoxContent: "The fireplace is crackling warmly.",
+  },
+};
+
+const sink: CollisionObject = {
+  x: 385,
+  y: 99,
+  width: 31,
+  height: 25,
+  colour: COLLISION_INTERACTION_COLOUR,
+  interaction: {
+    playerDirectionToActivate: "up",
+    modalType: null,
+    cvSection: null,
+    textBoxHeader: null,
+    textBoxContent: "The sink is empty, Alex runs a tight ship.",
+  },
+};
+
+const worktopFish: CollisionObject = {
+  x: 480,
+  y: 98,
+  width: 31,
+  height: 25,
+  colour: COLLISION_INTERACTION_COLOUR,
+  interaction: {
+    playerDirectionToActivate: "up",
+    modalType: null,
+    cvSection: null,
+    textBoxHeader: null,
+    textBoxContent: "A tasty looking fish for tonights dinner.",
+  },
+};
+
+const beerKeg: CollisionObject = {
+  x: 512,
+  y: 98,
+  width: 31,
+  height: 25,
+  colour: COLLISION_INTERACTION_COLOUR,
+  interaction: {
+    playerDirectionToActivate: "up",
+    modalType: null,
+    cvSection: null,
+    textBoxHeader: null,
+    textBoxContent:
+      "The beer keg is full to the brim, no time for a drink now though.",
+  },
+};
+
+const cabinateRightTop: CollisionObject = {
+  x: 632,
+  y: 193,
+  width: 25,
+  height: 52,
+  colour: COLLISION_INTERACTION_COLOUR,
+  interaction: {
+    playerDirectionToActivate: "right",
+    modalType: null,
+    cvSection: null,
+    textBoxHeader: null,
+    textBoxContent:
+      "The cabinate is packed full of retro video games, Alex enjoys collecting.",
+  },
+};
+
+const cabinateRightBottom: CollisionObject = {
+  x: 633,
+  y: 258,
+  width: 25,
+  height: 52,
+  colour: COLLISION_INTERACTION_COLOUR,
+  interaction: {
+    playerDirectionToActivate: "right",
+    modalType: null,
+    cvSection: null,
+    textBoxHeader: null,
+    textBoxContent:
+      "More video game nostalgia, I see metroid prime, my favourite!",
+  },
+};
+
+const cabinateLeftTop: CollisionObject = {
+  x: 49,
+  y: 385,
+  width: 25,
+  height: 52,
+  colour: COLLISION_INTERACTION_COLOUR,
+  interaction: {
+    playerDirectionToActivate: "left",
+    modalType: null,
+    cvSection: null,
+    textBoxHeader: null,
+    textBoxContent: "The cabinate contains some of Alex's favourite films.",
+  },
+};
+
+const cabinateLeftBottom: CollisionObject = {
+  x: 49,
+  y: 321,
+  width: 25,
+  height: 52,
+  colour: COLLISION_INTERACTION_COLOUR,
+  interaction: {
+    playerDirectionToActivate: "left",
+    modalType: null,
+    cvSection: null,
+    textBoxHeader: null,
+    textBoxContent:
+      "The cabinate contains some photos of alex's friends and family.",
   },
 };
 
@@ -132,4 +263,12 @@ export const alexHouseInteractionObjects = [
   bookFourTop,
   bookShelfLeft,
   bookShelfRight,
+  fireplace,
+  sink,
+  worktopFish,
+  beerKeg,
+  cabinateRightTop,
+  cabinateRightBottom,
+  cabinateLeftTop,
+  cabinateLeftBottom,
 ];

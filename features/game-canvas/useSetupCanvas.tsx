@@ -6,7 +6,11 @@ import { useHandleInteraction } from "./utils/useHandleInteraction";
 import { malletTownCollisionObjects } from "./collision-objects/mallet-town/mallet-town-objects";
 import { malletTownInteractionObjects } from "./interaction-objects/mallet-town/mallet-town-objects";
 import { useDrawerPlayer } from "./utils/useDrawerPlayer";
-import { GameMode, gameModeSelector } from "@/store/appSlice";
+import {
+  GameMode,
+  gameModeSelector,
+  interactionCooldownUntilSelector,
+} from "@/store/appSlice";
 import { useSelector } from "react-redux";
 
 type Rectangle = {
@@ -93,11 +97,18 @@ type CurrentGameMode = {
   mode: GameMode;
 };
 
+type CurrentCooldownUntil = {
+  value: number | null;
+};
+
 export let collisionObjects: CollisionObject[] = [];
 export let interactionObjects: CollisionObject[] = [];
 export let currentScene: CurrentScene = { scene: "mallet-town" };
 // export let currentScene: CurrentScene = { scene: "alex-bedroom" };
 export let currentGameMode: CurrentGameMode = { mode: "game" };
+export let currentInteractionCooldownUntil: CurrentCooldownUntil = {
+  value: null,
+};
 
 export const useSetupCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -105,10 +116,17 @@ export const useSetupCanvas = () => {
   const { updatePlayer } = useUpdatePlayer();
   const { handleInteraction } = useHandleInteraction();
   const gameMode = useSelector(gameModeSelector);
+  const interactionCooldownUntil = useSelector(
+    interactionCooldownUntilSelector
+  );
 
   useEffect(() => {
     currentGameMode.mode = gameMode;
   }, [gameMode]);
+
+  useEffect(() => {
+    currentInteractionCooldownUntil.value = interactionCooldownUntil;
+  }, [interactionCooldownUntil]);
 
   const [rect, setRect] = useState<Rectangle>({
     x: 150,
@@ -369,7 +387,6 @@ export const useSetupCanvas = () => {
       drawBackground();
       updatePlayer(canvas, keys, player, collisionObjects);
       handleInteraction(keys, player, interactionObjects);
-      // handleTextBox();
       drawPlayer(ctx, keys, player);
       drawCollisionObjects(ctx);
       drawInteractionObjects(ctx);

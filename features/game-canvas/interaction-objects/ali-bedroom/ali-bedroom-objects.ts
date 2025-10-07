@@ -50,4 +50,105 @@ const bookShelf: CollisionObject = {
   },
 };
 
-export const aliBedroomInteractionObjects = [computer, pizza, bookShelf];
+const cactus: CollisionObject = {
+  x: 353,
+  y: 120,
+  width: 28,
+  height: 33,
+  colour: COLLISION_INTERACTION_COLOUR,
+  interaction: {
+    playerDirectionToActivate: "up",
+    cvSection: null,
+    textBoxHeader: null,
+    textBoxContent: "A healthy looking cactus.",
+    modalType: null,
+  },
+};
+
+const housePlant: CollisionObject = {
+  x: 579,
+  y: 124,
+  width: 28,
+  height: 33,
+  colour: COLLISION_INTERACTION_COLOUR,
+  interaction: {
+    playerDirectionToActivate: "up",
+    cvSection: null,
+    textBoxHeader: null,
+    textBoxContent: "A house plant.",
+    modalType: null,
+  },
+};
+
+const serverOne: CollisionObject = {
+  x: 163,
+  y: 295,
+  width: 27,
+  height: 29,
+  colour: COLLISION_INTERACTION_COLOUR,
+  interaction: {
+    playerDirectionToActivate: "up",
+    cvSection: null,
+    textBoxHeader: null,
+    textBoxContent: "The server is running smoothly.",
+    modalType: null,
+  },
+};
+
+const serverTwo: CollisionObject = {
+  x: 193,
+  y: 295,
+  width: 27,
+  height: 29,
+  colour: COLLISION_INTERACTION_COLOUR,
+  interaction: {
+    playerDirectionToActivate: "up",
+    cvSection: null,
+    textBoxHeader: null,
+    textBoxContent: "The server humms with activity.",
+    modalType: null,
+  },
+};
+
+const serverThree: CollisionObject = {
+  x: 225,
+  y: 294,
+  width: 27,
+  height: 29,
+  colour: COLLISION_INTERACTION_COLOUR,
+  interaction: {
+    playerDirectionToActivate: "up",
+    cvSection: null,
+    textBoxHeader: null,
+    textBoxContent: "The server door is open, oops ali left it open.",
+    modalType: null,
+  },
+};
+
+const bedLeft: CollisionObject = {
+  x: 516,
+  y: 392,
+  width: 27,
+  height: 29,
+  colour: COLLISION_INTERACTION_COLOUR,
+  interaction: {
+    playerDirectionToActivate: "right",
+    cvSection: null,
+    textBoxHeader: null,
+    textBoxContent: "A cosy looking bed.",
+    modalType: null,
+  },
+};
+
+export const aliBedroomInteractionObjects = [
+  computer,
+  pizza,
+  bookShelf,
+
+  cactus,
+  housePlant,
+  serverOne,
+  serverTwo,
+  serverThree,
+  bedLeft,
+];

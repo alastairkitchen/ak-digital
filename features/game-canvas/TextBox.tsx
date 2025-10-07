@@ -5,6 +5,7 @@ import {
   CvSection,
   ModalType,
   setCongratsMessageShown,
+  setInteractionCooldown,
   setTextBoxCurrentChunkIndex,
   textBoxContentSelector,
   textBoxCurrentChunkIndexSelector,
@@ -145,6 +146,11 @@ export const TextBox = () => {
     }
   };
 
+  const handleNoButton = () => {
+    handleCloseTextBox();
+    dispatch(setInteractionCooldown(200));
+  };
+
   if (!textBoxIsOpen || !textBoxContent) {
     return null;
   }
@@ -222,7 +228,7 @@ export const TextBox = () => {
           <Button
             ref={noButtonRef}
             data-focus-element-id="no-button"
-            onClick={handleCloseTextBox}
+            onClick={handleNoButton}
             minW="0"
             p={0}
             width="100%"

@@ -27,6 +27,7 @@ export interface AppState {
   textBoxCurrentChunkIndex: number;
   gameMode: GameMode;
   congratsMessageShown: boolean;
+  interactionCooldownUntil: number | null;
 }
 
 const initialState: AppState = {
@@ -39,6 +40,7 @@ const initialState: AppState = {
   gameMode: "game",
   congratsMessageShown: false,
   textBoxCurrentChunkIndex: 0,
+  interactionCooldownUntil: null,
 };
 
 export const appSlice = createSlice({
@@ -85,6 +87,12 @@ export const appSlice = createSlice({
     setTextBoxCurrentChunkIndex: (state, action: PayloadAction<number>) => {
       state.textBoxCurrentChunkIndex = action.payload;
     },
+    setInteractionCooldown: (state, action: PayloadAction<number>) => {
+      state.interactionCooldownUntil = Date.now() + action.payload;
+    },
+    clearInteractionCooldown: (state) => {
+      state.interactionCooldownUntil = null;
+    },
   },
 });
 
@@ -97,6 +105,8 @@ export const {
   setGameMode,
   setCongratsMessageShown,
   setTextBoxCurrentChunkIndex,
+  setInteractionCooldown,
+  clearInteractionCooldown,
 } = appSlice.actions;
 
 export const currentOpenModalSelector: (
@@ -131,5 +141,9 @@ export const congratsMessageShownSelector: (state: RootState) => boolean = (
 export const textBoxCurrentChunkIndexSelector: (state: RootState) => number = (
   state
 ) => state.app.textBoxCurrentChunkIndex;
+
+export const interactionCooldownUntilSelector: (
+  state: RootState
+) => number | null = (state) => state.app.interactionCooldownUntil;
 
 export default appSlice.reducer;

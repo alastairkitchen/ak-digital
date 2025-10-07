@@ -1,10 +1,10 @@
 import { CollisionObject } from "../collision-objects";
-import { Player } from "../useSetupCanvas";
+import { currentInteractionCooldownUntil, Player } from "../useSetupCanvas";
 import { wouldCollide } from "./would-collide";
 import { useDispatch } from "react-redux";
 import { openTextBox, setCvProgress } from "../../../store/appSlice";
 
-export function useHandleInteraction() {
+export const useHandleInteraction = () => {
   const dispatch = useDispatch();
 
   const handleInteraction = (
@@ -12,6 +12,13 @@ export function useHandleInteraction() {
     player: Player,
     interactionObjects: CollisionObject[]
   ) => {
+    if (
+      currentInteractionCooldownUntil.value &&
+      Date.now() < currentInteractionCooldownUntil.value
+    ) {
+      return;
+    }
+
     if (keys["Enter"] || keys[" "]) {
       const { isColliding, collidingObject } = wouldCollide(
         player.x,
@@ -40,4 +47,4 @@ export function useHandleInteraction() {
   };
 
   return { handleInteraction };
-}
+};

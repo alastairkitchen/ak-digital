@@ -108,7 +108,7 @@ const backWallBookshelf2: CollisionObject = {
 const leftWallBookshelf: CollisionObject = {
   x: 35,
   y: 385,
-  width: 32,
+  width: 26,
   height: 131,
   colour: COLLISION_COLOUR,
 };

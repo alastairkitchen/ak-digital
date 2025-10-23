@@ -80,6 +80,7 @@ export const appSlice = createSlice({
       state.textBoxContent = "";
       state.textBoxModal = null;
       state.textBoxCurrentChunkIndex = 0;
+      state.interactionCooldownUntil = Date.now() + 500;
     },
     setCongratsMessageShown: (state) => {
       state.congratsMessageShown = true;

@@ -29,6 +29,7 @@ export const GameCanvas: React.FC = () => {
       </Box>
 
       <Box
+        tabIndex={0}
         width={CANVAS_WIDTH}
         position="relative"
         border="1px solid"

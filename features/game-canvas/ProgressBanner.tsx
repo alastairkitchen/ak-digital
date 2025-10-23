@@ -7,19 +7,22 @@ import { LuGraduationCap } from "react-icons/lu";
 import { TbTie } from "react-icons/tb";
 import { useSelector } from "react-redux";
 import Image from "next/image";
+import { useOpenDirectModal } from "../redux-modals/useOpenModal";
 
 const ProgressItem: React.FC<FlexProps & { active?: boolean }> = ({
   active = false,
+  onClick,
   children,
   ...rest
 }) => {
   return (
     <Flex
+      onClick={active ? onClick : undefined}
       w="30px"
       h="30px"
       alignItems="center"
       justifyContent="center"
-      background={active ? "#d0a207" : "transparent"}
+      background={active ? "yellow.500" : "transparent"}
       color="#000000"
       boxShadow={active ? "0px 4px 2px black" : "none"}
       outline="2px solid"
@@ -27,6 +30,8 @@ const ProgressItem: React.FC<FlexProps & { active?: boolean }> = ({
       borderRadius="sm"
       mb={active ? "4px" : "0px"}
       opacity={active ? 1 : 0.5}
+      cursor={active ? "pointer" : "default"}
+      _hover={{ background: active ? "yellow.400" : "transparent" }}
       {...rest}
     >
       {children}
@@ -36,6 +41,8 @@ const ProgressItem: React.FC<FlexProps & { active?: boolean }> = ({
 
 export const ProgressBanner: React.FC<FlexProps> = (props) => {
   const cvProgress = useSelector(cvProgressSelector);
+
+  const { openModal } = useOpenDirectModal();
   return (
     <Flex
       alignItems="center"
@@ -63,35 +70,50 @@ export const ProgressBanner: React.FC<FlexProps> = (props) => {
       </Text>
 
       {/* summary */}
-      <ProgressItem active={cvProgress.includes("summary")}>
+      <ProgressItem
+        active={cvProgress.includes("summary")}
+        onClick={() => openModal("cvSummary")}
+      >
         <Icon>
           <HiOutlineDocumentText size={18} />
         </Icon>
       </ProgressItem>
 
       {/* skills */}
-      <ProgressItem active={cvProgress.includes("skills")}>
+      <ProgressItem
+        active={cvProgress.includes("skills")}
+        onClick={() => openModal("skills")}
+      >
         <Icon>
           <HiMiniComputerDesktop size={19} />
         </Icon>
       </ProgressItem>
 
       {/* experience */}
-      <ProgressItem active={cvProgress.includes("experience")}>
+      <ProgressItem
+        active={cvProgress.includes("experience")}
+        onClick={() => openModal("experience")}
+      >
         <Icon>
           <TbTie size={18} />
         </Icon>
       </ProgressItem>
 
       {/* projects */}
-      <ProgressItem active={cvProgress.includes("projects")}>
+      <ProgressItem
+        active={cvProgress.includes("projects")}
+        onClick={() => openModal("projects")}
+      >
         <Icon>
           <FaCode size={19} />
         </Icon>
       </ProgressItem>
 
       {/* education */}
-      <ProgressItem active={cvProgress.includes("education")}>
+      <ProgressItem
+        active={cvProgress.includes("education")}
+        onClick={() => openModal("education")}
+      >
         <Icon>
           <LuGraduationCap size={19} />
         </Icon>

@@ -18,11 +18,14 @@ export const SharedDialog: React.FC<SharedDialogProps> = ({
   onClose,
   title,
   children,
+  ...rest
 }) => {
   return (
     <Dialog.Root
       open={open}
       onOpenChange={(details) => !details.open && onClose()}
+      restoreFocus={false} // xAK avoid conflicts with game focus management
+      {...rest}
     >
       <Portal>
         <Dialog.Backdrop bg="black" />

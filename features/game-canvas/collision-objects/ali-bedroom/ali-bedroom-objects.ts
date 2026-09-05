@@ -1,7 +1,7 @@
 import { COLLISION_ACTION_COLOUR, COLLISION_COLOUR, CollisionObject } from "..";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../../const";
 import { aliHouseInteractionObjects } from "../../interaction-objects/ali-house/ali-house-objects";
-import { changeScene, currentScene } from "../../useSetupCanvas";
+import { changeScene, currentScene } from "../../state/gameState";
 import { aliHouseCollisionObjects } from "../ali-house/ali-house-objects";
 
 // Bounds -----------------------------------------
@@ -85,7 +85,7 @@ const aliBedroomExitDoor: CollisionObject = {
       120,
       currentScene,
       aliHouseCollisionObjects,
-      aliHouseInteractionObjects
+      aliHouseInteractionObjects,
     ),
 };
 

@@ -2,7 +2,7 @@ import { COLLISION_ACTION_COLOUR, COLLISION_COLOUR, CollisionObject } from "..";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../../const";
 import { alexBedroomInteractionObjects } from "../../interaction-objects/alex-bedroom/alex-bedroom-objects";
 import { malletTownInteractionObjects } from "../../interaction-objects/mallet-town/mallet-town-objects";
-import { changeScene, currentScene } from "../../useSetupCanvas";
+import { changeScene, currentScene } from "../../state/gameState";
 import { alexBedroomCollisionObjects } from "../alex-bedroom/alex-bedroom-objects";
 import { malletTownCollisionObjects } from "../mallet-town/mallet-town-objects";
 
@@ -177,7 +177,7 @@ const alexHouseExitFrontDoor: CollisionObject = {
       310,
       currentScene,
       malletTownCollisionObjects,
-      malletTownInteractionObjects
+      malletTownInteractionObjects,
     ),
 };
 
@@ -194,7 +194,7 @@ const alexHouseExitBackDoor: CollisionObject = {
       92,
       currentScene,
       malletTownCollisionObjects,
-      malletTownInteractionObjects
+      malletTownInteractionObjects,
     ),
 };
 const alexEnterBedroomDoor: CollisionObject = {
@@ -210,7 +210,7 @@ const alexEnterBedroomDoor: CollisionObject = {
       146,
       currentScene,
       alexBedroomCollisionObjects,
-      alexBedroomInteractionObjects
+      alexBedroomInteractionObjects,
     ),
 };
 

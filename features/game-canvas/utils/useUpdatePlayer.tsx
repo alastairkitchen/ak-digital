@@ -1,5 +1,6 @@
 import { CollisionObject } from "../collision-objects";
-import { currentGameMode, Player } from "../useSetupCanvas";
+import { currentGameMode } from "../state/gameState";
+import { Player } from "../state/types";
 import { wouldCollide } from "./would-collide";
 
 export const useUpdatePlayer = () => {
@@ -7,7 +8,7 @@ export const useUpdatePlayer = () => {
     canvas: HTMLCanvasElement | null,
     keys: Record<string, boolean>,
     player: Player,
-    collisionObjects: CollisionObject[]
+    collisionObjects: CollisionObject[],
   ) => {
     if (!canvas || currentGameMode.mode !== "game") return;
 
@@ -51,7 +52,7 @@ export const useUpdatePlayer = () => {
       finalX,
       finalY,
       collisionObjects,
-      player
+      player,
     );
 
     // Check diagonal movement (both x and y changed)

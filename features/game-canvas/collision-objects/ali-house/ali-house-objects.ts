@@ -2,7 +2,7 @@ import { COLLISION_ACTION_COLOUR, COLLISION_COLOUR, CollisionObject } from "..";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../../const";
 import { aliBedroomInteractionObjects } from "../../interaction-objects/ali-bedroom/ali-bedroom-objects";
 import { malletTownInteractionObjects } from "../../interaction-objects/mallet-town/mallet-town-objects";
-import { changeScene, currentScene } from "../../useSetupCanvas";
+import { changeScene, currentScene } from "../../state/gameState";
 import { aliBedroomCollisionObjects } from "../ali-bedroom/ali-bedroom-objects";
 import { malletTownCollisionObjects } from "../mallet-town/mallet-town-objects";
 
@@ -200,7 +200,7 @@ const aliHouseExitFrontDoor: CollisionObject = {
       300,
       currentScene,
       malletTownCollisionObjects,
-      malletTownInteractionObjects
+      malletTownInteractionObjects,
     ),
 };
 
@@ -217,7 +217,7 @@ const aliHouseExitBackDoor: CollisionObject = {
       90,
       currentScene,
       malletTownCollisionObjects,
-      malletTownInteractionObjects
+      malletTownInteractionObjects,
     ),
 };
 
@@ -234,7 +234,7 @@ const aliEnterBedroomDoor: CollisionObject = {
       148,
       currentScene,
       aliBedroomCollisionObjects,
-      aliBedroomInteractionObjects
+      aliBedroomInteractionObjects,
     ),
 };
 

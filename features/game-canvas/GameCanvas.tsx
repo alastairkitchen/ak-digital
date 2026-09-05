@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useSetupCanvas } from "./useSetupCanvas";
-import { player } from "./useSetupCanvas";
+import { player } from "./state/gameState";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./const";
 import { Box } from "@chakra-ui/react";
 import { TextBox } from "./TextBox";

@@ -1,4 +1,4 @@
-import { changeScene, currentScene } from "../../useSetupCanvas";
+import { changeScene, currentScene } from "../../state/gameState";
 import { alexHouseCollisionObjects } from "../alex-house/alex-house-objects";
 import { COLLISION_ACTION_COLOUR, COLLISION_COLOUR, CollisionObject } from "..";
 import { aliHouseCollisionObjects } from "../ali-house/ali-house-objects";
@@ -62,7 +62,7 @@ const aliHouseDoor: CollisionObject = {
       500,
       currentScene,
       aliHouseCollisionObjects,
-      aliHouseInteractionObjects
+      aliHouseInteractionObjects,
     ),
 };
 
@@ -79,7 +79,7 @@ const aliHouseBackDoor: CollisionObject = {
       120,
       currentScene,
       aliHouseCollisionObjects,
-      aliHouseInteractionObjects
+      aliHouseInteractionObjects,
     ),
 };
 
@@ -114,7 +114,7 @@ const alexHouseDoor: CollisionObject = {
       455,
       currentScene,
       alexHouseCollisionObjects,
-      alexHouseInteractionObjects
+      alexHouseInteractionObjects,
     ),
 };
 
@@ -131,7 +131,7 @@ const alexHouseBackDoor: CollisionObject = {
       135,
       currentScene,
       alexHouseCollisionObjects,
-      alexHouseInteractionObjects
+      alexHouseInteractionObjects,
     ),
 };
 

@@ -1,5 +1,6 @@
 import { CollisionObject } from "../collision-objects";
-import { currentInteractionCooldownUntil, Player } from "../useSetupCanvas";
+import { currentInteractionCooldownUntil } from "../state/gameState";
+import { Player } from "../state/types";
 import { wouldCollide } from "./would-collide";
 import { useDispatch } from "react-redux";
 import { openTextBox, setCvProgress } from "../../../store/appSlice";
@@ -10,7 +11,7 @@ export const useHandleInteraction = () => {
   const handleInteraction = (
     keys: Record<string, boolean>,
     player: Player,
-    interactionObjects: CollisionObject[]
+    interactionObjects: CollisionObject[],
   ) => {
     if (
       currentInteractionCooldownUntil.value &&
@@ -24,7 +25,7 @@ export const useHandleInteraction = () => {
         player.x,
         player.y,
         interactionObjects,
-        player
+        player,
       );
       if (
         isColliding &&
@@ -37,7 +38,7 @@ export const useHandleInteraction = () => {
             header: collidingObject.interaction.textBoxHeader,
             content: collidingObject.interaction.textBoxContent,
             modalType: collidingObject.interaction.modalType,
-          })
+          }),
         );
         if (collidingObject.interaction.cvSection !== null) {
           dispatch(setCvProgress(collidingObject.interaction.cvSection));

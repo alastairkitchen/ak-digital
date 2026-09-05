@@ -59,6 +59,7 @@ export const ProgressBanner: React.FC<FlexProps> = (props) => {
           alt="avatar"
           width={32}
           height={32}
+          style={{ width: 32, height: 32 }}
         />
       </Box>
 

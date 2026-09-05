@@ -1,5 +1,5 @@
 import { CollisionObject } from "../collision-objects";
-import { Player } from "../useSetupCanvas";
+import { Player } from "../state/types";
 
 type WouldCollide = {
   x: number;
@@ -12,7 +12,7 @@ export const wouldCollide = (
   x: number,
   y: number,
   collisionObjects: CollisionObject[],
-  player: Player
+  player: Player,
 ) => {
   for (let i = 0; i < collisionObjects.length; i++) {
     const obj = collisionObjects[i];

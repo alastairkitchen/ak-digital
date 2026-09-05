@@ -1,46 +1,27 @@
 "use client";
-import {
-  currentGameMode,
-  player,
-  PlayerDirection,
-  type Player,
-} from "../useSetupCanvas";
+import { currentGameMode, player } from "../state/gameState";
+import { PlayerDirection, type Player } from "../state/types";
+import { createBrowserImage } from "./createBrowserImage";
 
-const characterUp1 = new Image();
-characterUp1.src = "http://localhost:3000/character-sprites/up-1.png";
-const characterUp2 = new Image();
-characterUp2.src = "http://localhost:3000/character-sprites/up-2.png";
-const characterUp3 = new Image();
-characterUp3.src = "http://localhost:3000/character-sprites/up-3.png";
-const characterUp4 = new Image();
-characterUp4.src = "http://localhost:3000/character-sprites/up-4.png";
+const characterUp1 = createBrowserImage("/character-sprites/up-1.png");
+const characterUp2 = createBrowserImage("/character-sprites/up-2.png");
+const characterUp3 = createBrowserImage("/character-sprites/up-3.png");
+const characterUp4 = createBrowserImage("/character-sprites/up-4.png");
 
-const characterDown1 = new Image();
-characterDown1.src = "http://localhost:3000/character-sprites/down-1.png";
-const characterDown2 = new Image();
-characterDown2.src = "http://localhost:3000/character-sprites/down-2.png";
-const characterDown3 = new Image();
-characterDown3.src = "http://localhost:3000/character-sprites/down-3.png";
-const characterDown4 = new Image();
-characterDown4.src = "http://localhost:3000/character-sprites/down-4.png";
+const characterDown1 = createBrowserImage("/character-sprites/down-1.png");
+const characterDown2 = createBrowserImage("/character-sprites/down-2.png");
+const characterDown3 = createBrowserImage("/character-sprites/down-3.png");
+const characterDown4 = createBrowserImage("/character-sprites/down-4.png");
 
-const characterLeft1 = new Image();
-characterLeft1.src = "http://localhost:3000/character-sprites/left-1.png";
-const characterLeft2 = new Image();
-characterLeft2.src = "http://localhost:3000/character-sprites/left-2.png";
-const characterLeft3 = new Image();
-characterLeft3.src = "http://localhost:3000/character-sprites/left-3.png";
-const characterLeft4 = new Image();
-characterLeft4.src = "http://localhost:3000/character-sprites/left-4.png";
+const characterLeft1 = createBrowserImage("/character-sprites/left-1.png");
+const characterLeft2 = createBrowserImage("/character-sprites/left-2.png");
+const characterLeft3 = createBrowserImage("/character-sprites/left-3.png");
+const characterLeft4 = createBrowserImage("/character-sprites/left-4.png");
 
-const characterRight1 = new Image();
-characterRight1.src = "http://localhost:3000/character-sprites/right-1.png";
-const characterRight2 = new Image();
-characterRight2.src = "http://localhost:3000/character-sprites/right-2.png";
-const characterRight3 = new Image();
-characterRight3.src = "http://localhost:3000/character-sprites/right-3.png";
-const characterRight4 = new Image();
-characterRight4.src = "http://localhost:3000/character-sprites/right-4.png";
+const characterRight1 = createBrowserImage("/character-sprites/right-1.png");
+const characterRight2 = createBrowserImage("/character-sprites/right-2.png");
+const characterRight3 = createBrowserImage("/character-sprites/right-3.png");
+const characterRight4 = createBrowserImage("/character-sprites/right-4.png");
 
 let currentCharacter: HTMLImageElement = characterDown1;
 let lastDirection: PlayerDirection = "down";
@@ -52,7 +33,7 @@ export const useDrawerPlayer = () => {
   const drawPlayer = (
     ctx: CanvasRenderingContext2D | null,
     keys: Record<string, boolean>,
-    player: Player
+    player: Player,
   ) => {
     if (!ctx) return;
 
@@ -62,7 +43,7 @@ export const useDrawerPlayer = () => {
         player.x,
         player.y,
         player.size,
-        player.size
+        player.size,
       );
       return;
     }
@@ -144,7 +125,7 @@ export const useDrawerPlayer = () => {
       player.x,
       player.y,
       player.size,
-      player.size
+      player.size,
     );
 
     if (player.y >= startYPosition + 40 || player.y <= startYPosition - 40) {

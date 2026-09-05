@@ -2,7 +2,6 @@ import {
   closeTextBox,
   congratsMessageShownSelector,
   cvProgressSelector,
-  CvSection,
   introIsOpenSelector,
   ModalType,
   setCongratsMessageShown,
@@ -18,47 +17,20 @@ import { Box, Button, Flex, Icon, Text } from "@chakra-ui/react";
 import { IoCaretDownSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { useOpenDirectModal } from "../redux-modals/useOpenModal";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
+import { chunkText } from "./utils/chunkText";
 
-const CHARACTER_LIMIT = 160;
+type TextBoxStep = "advance" | "close" | "confirm" | "start";
 
-const congratulationsMessage =
-  "Congratulations you found your first section of the CV, find all sections then check ali's computer to collect your prize!";
-
-const chunkText = (
-  header: string,
-  text: string,
-  cvProgress: CvSection[],
-  congratsMessageShown: boolean,
+const getTextBoxStep = (
+  isLastChunk: boolean,
+  introIsOpen: boolean,
   textBoxModal: ModalType | null,
-) => {
-  const chunks = [];
-  let nextCharacter = text[0];
-  let startIndex = 0;
-  let endIndex = CHARACTER_LIMIT;
-
-  if (textBoxModal !== null) {
-    if (cvProgress.length < 2 && !congratsMessageShown) {
-      chunks.push(congratulationsMessage);
-    }
-
-    chunks.push(header);
-  }
-
-  if (text.length <= CHARACTER_LIMIT) {
-    chunks.push(text);
-    return chunks;
-  }
-
-  while (nextCharacter) {
-    const newChunk = text.slice(startIndex, endIndex);
-    chunks.push(newChunk);
-    startIndex = endIndex + 1;
-    endIndex = startIndex + CHARACTER_LIMIT;
-    nextCharacter = text[startIndex];
-  }
-
-  return chunks;
+): TextBoxStep => {
+  if (!isLastChunk) return "advance";
+  if (introIsOpen) return "start";
+  if (textBoxModal !== null) return "confirm";
+  return "close";
 };
 
 export const TextBox = () => {
@@ -82,18 +54,29 @@ export const TextBox = () => {
     textBoxModal,
   );
 
+  const isLastChunk = currentChunkIndex + 1 >= textChunks.length;
+  const step = getTextBoxStep(isLastChunk, introIsOpen, textBoxModal);
+
   const continueButtonRef = useRef<HTMLButtonElement>(null);
   const startGameButtonRef = useRef<HTMLButtonElement>(null);
   const yesButtonRef = useRef<HTMLButtonElement>(null);
   const noButtonRef = useRef<HTMLButtonElement>(null);
 
-  const needUserInput = useMemo(
-    () => currentChunkIndex + 1 >= textChunks.length && textBoxModal !== null,
-    [currentChunkIndex, textBoxContent],
-  );
+  // One ref per step, so a single effect can focus whichever is active.
+  const stepFocusRef: Record<
+    TextBoxStep,
+    React.RefObject<HTMLButtonElement | null>
+  > = {
+    advance: continueButtonRef,
+    close: continueButtonRef,
+    start: startGameButtonRef,
+    confirm: yesButtonRef,
+  };
 
-  const isLastChunk = currentChunkIndex + 1 >= textChunks.length;
-  const showStartGameButton = introIsOpen && isLastChunk;
+  useEffect(() => {
+    if (!textBoxIsOpen) return;
+    stepFocusRef[step].current?.focus();
+  }, [textBoxIsOpen, step]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -114,34 +97,10 @@ export const TextBox = () => {
 
     document.addEventListener("keydown", handleKeyDown);
 
-    () => {
+    return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
-
-  useEffect(() => {
-    if (textBoxIsOpen && continueButtonRef.current) {
-      continueButtonRef.current.focus();
-    }
-  }, [textBoxIsOpen]);
-
-  useEffect(() => {
-    if (textBoxIsOpen && startGameButtonRef.current) {
-      startGameButtonRef.current.focus();
-    }
-  }, [showStartGameButton]);
-
-  useEffect(() => {
-    if (needUserInput && yesButtonRef.current) {
-      yesButtonRef.current.focus();
-    }
-  }, [needUserInput]);
-
-  const handleOpenModal = () => {
-    if (textBoxModal) {
-      openModal(textBoxModal);
-    }
-  };
 
   const handleCloseTextBox = () => {
     dispatch(closeTextBox());
@@ -152,18 +111,24 @@ export const TextBox = () => {
   };
 
   const handleNextChunk = () => {
-    if (currentChunkIndex < textChunks.length - 1) {
-      const nextChunkIndex = currentChunkIndex + 1;
-      dispatch(setTextBoxCurrentChunkIndex(nextChunkIndex));
-    }
+    dispatch(setTextBoxCurrentChunkIndex(currentChunkIndex + 1));
   };
 
-  const handleNoButton = () => {
-    handleCloseTextBox();
+  const handleOpenModal = () => {
+    if (textBoxModal) {
+      openModal(textBoxModal);
+    }
   };
 
   const handleStartGame = () => {
     dispatch(startGame());
+  };
+
+  const stepAction: Record<TextBoxStep, () => void> = {
+    advance: handleNextChunk,
+    close: handleCloseTextBox,
+    confirm: handleOpenModal,
+    start: handleStartGame,
   };
 
   if (!textBoxIsOpen || !textBoxContent) {
@@ -184,7 +149,22 @@ export const TextBox = () => {
       color="black"
       padding="10px"
     >
-      {!needUserInput && !showStartGameButton && (
+      {step === "start" && (
+        <Button
+          ref={startGameButtonRef}
+          position="absolute"
+          bottom="5px"
+          right="5px"
+          height="30px"
+          px={3}
+          _focus={{ bg: "#d0a207" }}
+          onClick={stepAction.start}
+        >
+          Start Game
+        </Button>
+      )}
+
+      {(step === "advance" || step === "close") && (
         <Button
           ref={continueButtonRef}
           position="absolute"
@@ -195,30 +175,11 @@ export const TextBox = () => {
           minW="0"
           p={0}
           _focus={{ bg: "#d0a207" }}
-          onClick={
-            currentChunkIndex < textChunks.length - 1
-              ? handleNextChunk
-              : handleCloseTextBox
-          }
+          onClick={stepAction[step]}
         >
           <Icon>
             <IoCaretDownSharp size="20px" />
           </Icon>
-        </Button>
-      )}
-
-      {showStartGameButton && (
-        <Button
-          ref={startGameButtonRef}
-          position="absolute"
-          bottom="5px"
-          right="5px"
-          height="30px"
-          px={3}
-          _focus={{ bg: "#d0a207" }}
-          onClick={handleStartGame}
-        >
-          Start Game
         </Button>
       )}
 
@@ -228,9 +189,9 @@ export const TextBox = () => {
         <Text>{textChunks[currentChunkIndex]}</Text>
       )}
 
-      {needUserInput && <Text mt={2}>Read more?</Text>}
+      {step === "confirm" && <Text mt={2}>Read more?</Text>}
 
-      {needUserInput && (
+      {step === "confirm" && (
         <Flex
           position="absolute"
           top="-10px"
@@ -258,7 +219,7 @@ export const TextBox = () => {
           <Button
             ref={noButtonRef}
             data-focus-element-id="no-button"
-            onClick={handleNoButton}
+            onClick={handleCloseTextBox}
             minW="0"
             p={0}
             width="100%"

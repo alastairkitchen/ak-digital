@@ -13,7 +13,7 @@ export let player: Player = {
   y: 300,
   size: 30,
   color: "blue",
-  speed: 2,
+  speed: 1.2,
   dx: 0,
   dy: 0,
   direction: "down",

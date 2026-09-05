@@ -17,6 +17,9 @@ export type CvSection =
 
 export type GameMode = "game" | "text-box";
 
+const INTRO_MESSAGE =
+  "Welcome to my interactive CV game! Use the keyboard to control the player and interact with the world to find all of the CV sections. Once you have found all 5 collect a special prize on ali's pc.";
+
 export interface AppState {
   currentOpenModal: ModalType | null;
   cvProgress: CvSection[];
@@ -24,23 +27,27 @@ export interface AppState {
   textBoxHeader: string | null;
   textBoxContent: string | null;
   textBoxModal: ModalType | null;
+  textBoxIsIntro: boolean;
   textBoxCurrentChunkIndex: number;
   gameMode: GameMode;
   congratsMessageShown: boolean;
   interactionCooldownUntil: number | null;
+  introIsOpen: boolean;
 }
 
 const initialState: AppState = {
   currentOpenModal: null,
   cvProgress: [],
-  textBoxIsOpen: false,
-  textBoxHeader: "",
-  textBoxContent: "",
+  textBoxIsOpen: true,
+  textBoxHeader: null,
+  textBoxContent: INTRO_MESSAGE,
   textBoxModal: null,
-  gameMode: "game",
+  textBoxIsIntro: true,
+  gameMode: "text-box",
   congratsMessageShown: false,
   textBoxCurrentChunkIndex: 0,
   interactionCooldownUntil: null,
+  introIsOpen: true,
 };
 
 export const appSlice = createSlice({
@@ -66,7 +73,7 @@ export const appSlice = createSlice({
         header: string | null;
         content: string | null;
         modalType: ModalType | null;
-      }>
+      }>,
     ) => {
       state.gameMode = "text-box";
       state.textBoxIsOpen = true;
@@ -94,6 +101,14 @@ export const appSlice = createSlice({
     clearInteractionCooldown: (state) => {
       state.interactionCooldownUntil = null;
     },
+    startGame: (state) => {
+      state.introIsOpen = false;
+      state.textBoxIsOpen = false;
+      state.textBoxContent = "";
+      state.textBoxIsIntro = false;
+      state.textBoxCurrentChunkIndex = 0;
+      state.gameMode = "game";
+    },
   },
 });
 
@@ -108,10 +123,11 @@ export const {
   setTextBoxCurrentChunkIndex,
   setInteractionCooldown,
   clearInteractionCooldown,
+  startGame,
 } = appSlice.actions;
 
 export const currentOpenModalSelector: (
-  state: RootState
+  state: RootState,
 ) => ModalType | null = (state) => state.app.currentOpenModal;
 
 export const cvProgressSelector: (state: RootState) => CvSection[] = (state) =>
@@ -121,30 +137,36 @@ export const textBoxIsOpenSelector: (state: RootState) => boolean = (state) =>
   state.app.textBoxIsOpen;
 
 export const textBoxHeaderSelector: (state: RootState) => string | null = (
-  state
+  state,
 ) => state.app.textBoxHeader;
 
 export const textBoxContentSelector: (state: RootState) => string | null = (
-  state
+  state,
 ) => state.app.textBoxContent;
 
 export const textBoxModalSelector: (state: RootState) => ModalType | null = (
-  state
+  state,
 ) => state.app.textBoxModal;
+
+export const textBoxIsIntroSelector: (state: RootState) => boolean = (state) =>
+  state.app.textBoxIsIntro;
+
+export const introIsOpenSelector: (state: RootState) => boolean = (state) =>
+  state.app.introIsOpen;
 
 export const gameModeSelector: (state: RootState) => GameMode = (state) =>
   state.app.gameMode;
 
 export const congratsMessageShownSelector: (state: RootState) => boolean = (
-  state
+  state,
 ) => state.app.congratsMessageShown;
 
 export const textBoxCurrentChunkIndexSelector: (state: RootState) => number = (
-  state
+  state,
 ) => state.app.textBoxCurrentChunkIndex;
 
 export const interactionCooldownUntilSelector: (
-  state: RootState
+  state: RootState,
 ) => number | null = (state) => state.app.interactionCooldownUntil;
 
 export default appSlice.reducer;

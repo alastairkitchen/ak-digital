@@ -6,9 +6,11 @@ import {
   ModalType,
   setCongratsMessageShown,
   setTextBoxCurrentChunkIndex,
+  startGame,
   textBoxContentSelector,
   textBoxCurrentChunkIndexSelector,
   textBoxHeaderSelector,
+  textBoxIsIntroSelector,
   textBoxIsOpenSelector,
   textBoxModalSelector,
 } from "../../store/appSlice";
@@ -28,7 +30,7 @@ const chunkText = (
   text: string,
   cvProgress: CvSection[],
   congratsMessageShown: boolean,
-  textBoxModal: ModalType | null
+  textBoxModal: ModalType | null,
 ) => {
   const chunks = [];
   let nextCharacter = text[0];
@@ -70,13 +72,14 @@ export const TextBox = () => {
   const cvProgress = useSelector(cvProgressSelector);
   const congratsMessageShown = useSelector(congratsMessageShownSelector);
   const currentChunkIndex = useSelector(textBoxCurrentChunkIndexSelector);
+  const textBoxIsIntro = useSelector(textBoxIsIntroSelector);
 
   const textChunks = chunkText(
     textBoxHeader || "",
     textBoxContent || "",
     cvProgress,
     congratsMessageShown,
-    textBoxModal
+    textBoxModal,
   );
 
   const continueButtonRef = useRef<HTMLButtonElement>(null);
@@ -85,8 +88,11 @@ export const TextBox = () => {
 
   const needUserInput = useMemo(
     () => currentChunkIndex + 1 >= textChunks.length && textBoxModal !== null,
-    [currentChunkIndex, textBoxContent]
+    [currentChunkIndex, textBoxContent],
   );
+
+  const isLastChunk = currentChunkIndex + 1 >= textChunks.length;
+  const showStartGameButton = textBoxIsIntro && isLastChunk;
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -149,6 +155,10 @@ export const TextBox = () => {
     handleCloseTextBox();
   };
 
+  const handleStartGame = () => {
+    dispatch(startGame());
+  };
+
   if (!textBoxIsOpen || !textBoxContent) {
     return null;
   }
@@ -167,7 +177,7 @@ export const TextBox = () => {
       color="black"
       padding="10px"
     >
-      {!needUserInput && (
+      {!needUserInput && !showStartGameButton && (
         <Button
           ref={continueButtonRef}
           position="absolute"
@@ -187,6 +197,21 @@ export const TextBox = () => {
           <Icon>
             <IoCaretDownSharp size="20px" />
           </Icon>
+        </Button>
+      )}
+
+      {showStartGameButton && (
+        <Button
+          ref={continueButtonRef}
+          position="absolute"
+          bottom="5px"
+          right="5px"
+          height="30px"
+          px={3}
+          _focus={{ bg: "#d0a207" }}
+          onClick={handleStartGame}
+        >
+          Start Game
         </Button>
       )}
 

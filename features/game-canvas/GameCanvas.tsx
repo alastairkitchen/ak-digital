@@ -7,12 +7,13 @@ import { Box } from "@chakra-ui/react";
 import { TextBox } from "./TextBox";
 import { ProgressBanner } from "./ProgressBanner";
 import { useSelector } from "react-redux";
-import { gameModeSelector } from "@/store/appSlice";
+import { gameModeSelector, introIsOpenSelector } from "@/store/appSlice";
 
 export const GameCanvas: React.FC = () => {
   const { canvasRef, rect } = useSetupCanvas();
   const [update, setUpdate] = useState(true);
   const gameMode = useSelector(gameModeSelector);
+  const introIsOpen = useSelector(introIsOpenSelector);
 
   return (
     <>
@@ -42,10 +43,18 @@ export const GameCanvas: React.FC = () => {
           ref={canvasRef}
           height={CANVAS_HEIGHT}
           width={CANVAS_WIDTH}
+          style={{
+            filter: introIsOpen ? "blur(3px)" : "none",
+            transition: "filter 0.3s ease",
+          }}
         ></canvas>
 
         <TextBox />
-        <ProgressBanner inert={gameMode === "text-box"} />
+        <ProgressBanner
+          inert={gameMode === "text-box"}
+          filter={introIsOpen ? "blur(3px)" : "none"}
+          transition="filter 0.3s ease"
+        />
       </Box>
     </>
   );

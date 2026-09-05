@@ -3,6 +3,7 @@ import {
   congratsMessageShownSelector,
   cvProgressSelector,
   CvSection,
+  introIsOpenSelector,
   ModalType,
   setCongratsMessageShown,
   setTextBoxCurrentChunkIndex,
@@ -10,7 +11,6 @@ import {
   textBoxContentSelector,
   textBoxCurrentChunkIndexSelector,
   textBoxHeaderSelector,
-  textBoxIsIntroSelector,
   textBoxIsOpenSelector,
   textBoxModalSelector,
 } from "../../store/appSlice";
@@ -72,7 +72,7 @@ export const TextBox = () => {
   const cvProgress = useSelector(cvProgressSelector);
   const congratsMessageShown = useSelector(congratsMessageShownSelector);
   const currentChunkIndex = useSelector(textBoxCurrentChunkIndexSelector);
-  const textBoxIsIntro = useSelector(textBoxIsIntroSelector);
+  const introIsOpen = useSelector(introIsOpenSelector);
 
   const textChunks = chunkText(
     textBoxHeader || "",
@@ -83,6 +83,7 @@ export const TextBox = () => {
   );
 
   const continueButtonRef = useRef<HTMLButtonElement>(null);
+  const startGameButtonRef = useRef<HTMLButtonElement>(null);
   const yesButtonRef = useRef<HTMLButtonElement>(null);
   const noButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -92,7 +93,7 @@ export const TextBox = () => {
   );
 
   const isLastChunk = currentChunkIndex + 1 >= textChunks.length;
-  const showStartGameButton = textBoxIsIntro && isLastChunk;
+  const showStartGameButton = introIsOpen && isLastChunk;
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -123,6 +124,12 @@ export const TextBox = () => {
       continueButtonRef.current.focus();
     }
   }, [textBoxIsOpen]);
+
+  useEffect(() => {
+    if (textBoxIsOpen && startGameButtonRef.current) {
+      startGameButtonRef.current.focus();
+    }
+  }, [showStartGameButton]);
 
   useEffect(() => {
     if (needUserInput && yesButtonRef.current) {
@@ -202,7 +209,7 @@ export const TextBox = () => {
 
       {showStartGameButton && (
         <Button
-          ref={continueButtonRef}
+          ref={startGameButtonRef}
           position="absolute"
           bottom="5px"
           right="5px"

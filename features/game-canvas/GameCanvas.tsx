@@ -1,19 +1,36 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSetupCanvas } from "./useSetupCanvas";
 import { player } from "./state/gameState";
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./const";
 import { Box } from "@chakra-ui/react";
 import { TextBox } from "./TextBox";
 import { ProgressBanner } from "./ProgressBanner";
-import { useSelector } from "react-redux";
-import { gameModeSelector, introIsOpenSelector } from "@/store/appSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  gameModeSelector,
+  introIsOpenSelector,
+  openIntroTextBox,
+} from "@/store/appSlice";
 
 export const GameCanvas: React.FC = () => {
+  const dispatch = useDispatch();
   const { canvasRef, rect } = useSetupCanvas();
   const [update, setUpdate] = useState(true);
   const gameMode = useSelector(gameModeSelector);
   const introIsOpen = useSelector(introIsOpenSelector);
+
+  useEffect(() => {
+    const INTRO_MESSAGE =
+      "Welcome to my interactive CV game! Use the keyboard to control the player and interact with the world to find all of the CV sections. Once you have found all 5 collect a special prize on ali's pc.";
+
+    dispatch(
+      openIntroTextBox({
+        header: "Welcome!",
+        content: INTRO_MESSAGE,
+      }),
+    );
+  }, []);
 
   return (
     <>

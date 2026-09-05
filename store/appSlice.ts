@@ -17,9 +17,6 @@ export type CvSection =
 
 export type GameMode = "game" | "text-box";
 
-const INTRO_MESSAGE =
-  "Welcome to my interactive CV game! Use the keyboard to control the player and interact with the world to find all of the CV sections. Once you have found all 5 collect a special prize on ali's pc.";
-
 export interface AppState {
   currentOpenModal: ModalType | null;
   cvProgress: CvSection[];
@@ -27,7 +24,6 @@ export interface AppState {
   textBoxHeader: string | null;
   textBoxContent: string | null;
   textBoxModal: ModalType | null;
-  textBoxIsIntro: boolean;
   textBoxCurrentChunkIndex: number;
   gameMode: GameMode;
   congratsMessageShown: boolean;
@@ -40,9 +36,9 @@ const initialState: AppState = {
   cvProgress: [],
   textBoxIsOpen: true,
   textBoxHeader: null,
-  textBoxContent: INTRO_MESSAGE,
+  textBoxContent: "",
   textBoxModal: null,
-  textBoxIsIntro: true,
+  textBoxIsIntro: false,
   gameMode: "text-box",
   congratsMessageShown: false,
   textBoxCurrentChunkIndex: 0,
@@ -81,6 +77,19 @@ export const appSlice = createSlice({
       state.textBoxContent = action.payload.content;
       state.textBoxModal = action.payload.modalType;
     },
+    openIntroTextBox: (
+      state,
+      action: PayloadAction<{
+        header: string | null;
+        content: string | null;
+      }>,
+    ) => {
+      state.introIsOpen = true;
+      state.gameMode = "text-box";
+      state.textBoxIsOpen = true;
+      state.textBoxHeader = action.payload.header;
+      state.textBoxContent = action.payload.content;
+    },
     closeTextBox: (state) => {
       state.gameMode = "game";
       state.textBoxIsOpen = false;
@@ -105,7 +114,6 @@ export const appSlice = createSlice({
       state.introIsOpen = false;
       state.textBoxIsOpen = false;
       state.textBoxContent = "";
-      state.textBoxIsIntro = false;
       state.textBoxCurrentChunkIndex = 0;
       state.gameMode = "game";
     },
@@ -117,6 +125,7 @@ export const {
   closeAppModal,
   setCvProgress,
   openTextBox,
+  openIntroTextBox,
   closeTextBox,
   setGameMode,
   setCongratsMessageShown,
@@ -147,9 +156,6 @@ export const textBoxContentSelector: (state: RootState) => string | null = (
 export const textBoxModalSelector: (state: RootState) => ModalType | null = (
   state,
 ) => state.app.textBoxModal;
-
-export const textBoxIsIntroSelector: (state: RootState) => boolean = (state) =>
-  state.app.textBoxIsIntro;
 
 export const introIsOpenSelector: (state: RootState) => boolean = (state) =>
   state.app.introIsOpen;

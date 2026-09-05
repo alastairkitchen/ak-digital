@@ -61,6 +61,7 @@ export const TextBox = () => {
   const startGameButtonRef = useRef<HTMLButtonElement>(null);
   const yesButtonRef = useRef<HTMLButtonElement>(null);
   const noButtonRef = useRef<HTMLButtonElement>(null);
+  const stepRef = useRef<TextBoxStep>(step);
 
   // One ref per step, so a single effect can focus whichever is active.
   const stepFocusRef: Record<
@@ -79,18 +80,30 @@ export const TextBox = () => {
   }, [textBoxIsOpen, step]);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const activeElement = document.activeElement as HTMLElement;
-      const activeElementFocusId = activeElement?.dataset?.focusElementId;
+    stepRef.current = step;
+  }, [step]);
 
-      if (e.key === "ArrowUp" || e.key.toLowerCase() === "w") {
-        if (activeElementFocusId === "no-button") {
-          yesButtonRef.current?.focus();
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (stepRef.current === "advance") {
+        if (e.key === "ArrowDown" || e.key.toLowerCase() === "s") {
+          continueButtonRef.current?.click();
         }
       }
-      if (e.key === "ArrowDown" || e.key.toLowerCase() === "s") {
-        if (activeElementFocusId === "yes-button") {
-          noButtonRef.current?.focus();
+
+      if (stepRef.current === "confirm") {
+        const activeElement = document.activeElement as HTMLElement;
+        const activeElementFocusId = activeElement?.dataset?.focusElementId;
+
+        if (e.key === "ArrowUp" || e.key.toLowerCase() === "w") {
+          if (activeElementFocusId === "no-button") {
+            yesButtonRef.current?.focus();
+          }
+        }
+        if (e.key === "ArrowDown" || e.key.toLowerCase() === "s") {
+          if (activeElementFocusId === "yes-button") {
+            noButtonRef.current?.focus();
+          }
         }
       }
     };

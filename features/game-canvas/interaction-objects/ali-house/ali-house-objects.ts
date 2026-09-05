@@ -126,7 +126,7 @@ const stove: CollisionObject = {
   },
 };
 
-const cabinateRightTop: CollisionObject = {
+const cabinetRightTop: CollisionObject = {
   x: 634,
   y: 258,
   width: 26,
@@ -137,12 +137,12 @@ const cabinateRightTop: CollisionObject = {
     cvSection: null,
     textBoxHeader: null,
     textBoxContent:
-      "The cabinate is packed full of pokemon cards, ali loves collecting.",
+      "The cabinet is packed full of pokemon cards, ali loves collecting.",
     modalType: null,
   },
 };
 
-const cabinateRightBottom: CollisionObject = {
+const cabinetRightBottom: CollisionObject = {
   x: 634,
   y: 321,
   width: 26,
@@ -157,7 +157,7 @@ const cabinateRightBottom: CollisionObject = {
   },
 };
 
-const cabinateLeftTop: CollisionObject = {
+const cabinetLeftTop: CollisionObject = {
   x: 49,
   y: 385,
   width: 22,
@@ -167,13 +167,12 @@ const cabinateLeftTop: CollisionObject = {
     playerDirectionToActivate: "left",
     cvSection: null,
     textBoxHeader: null,
-    textBoxContent:
-      "The cabinate is full of photos of alis family and friends.",
+    textBoxContent: "The cabinet is full of photos of alis family and friends.",
     modalType: null,
   },
 };
 
-const cabinateLeftBottom: CollisionObject = {
+const cabinetLeftBottom: CollisionObject = {
   x: 49,
   y: 450,
   width: 22,
@@ -183,7 +182,7 @@ const cabinateLeftBottom: CollisionObject = {
     playerDirectionToActivate: "left",
     cvSection: null,
     textBoxHeader: null,
-    textBoxContent: "There is a yoga mat rolled up in the cabinate.",
+    textBoxContent: "There is a yoga mat rolled up in the cabinet.",
     modalType: null,
   },
 };
@@ -212,9 +211,9 @@ export const aliHouseInteractionObjects = [
   beerKeg,
   sink,
   stove,
-  cabinateRightTop,
-  cabinateRightBottom,
-  cabinateLeftTop,
-  cabinateLeftBottom,
+  cabinetRightTop,
+  cabinetRightBottom,
+  cabinetLeftTop,
+  cabinetLeftBottom,
   writingDeskPen,
 ];

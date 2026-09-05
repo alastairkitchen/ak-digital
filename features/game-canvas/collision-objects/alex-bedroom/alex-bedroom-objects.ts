@@ -61,7 +61,7 @@ const bed: CollisionObject = {
   colour: COLLISION_COLOUR,
 };
 
-const bedCabinate: CollisionObject = {
+const bedCabinet: CollisionObject = {
   x: 159,
   y: 401,
   width: 33,
@@ -101,7 +101,7 @@ const tallServer: CollisionObject = {
   colour: COLLISION_COLOUR,
 };
 
-const cabinateServer: CollisionObject = {
+const cabinetServer: CollisionObject = {
   x: 483,
   y: 289,
   width: 58,
@@ -152,12 +152,12 @@ export const alexBedroomCollisionObjects = [
   topWall,
   topWallRight,
   bed,
-  bedCabinate,
+  bedCabinet,
   coffeeTableChairLeft,
   coffeeTableChairTop,
   coffeeTable,
   tallServer,
-  cabinateServer,
+  cabinetServer,
   computerDesk,
   computerChair,
   topFurniture,

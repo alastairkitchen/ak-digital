@@ -191,7 +191,7 @@ const beerKeg: CollisionObject = {
   },
 };
 
-const cabinateRightTop: CollisionObject = {
+const cabinetRightTop: CollisionObject = {
   x: 632,
   y: 193,
   width: 25,
@@ -203,11 +203,11 @@ const cabinateRightTop: CollisionObject = {
     cvSection: null,
     textBoxHeader: null,
     textBoxContent:
-      "The cabinate is packed full of retro video games, Alex enjoys collecting.",
+      "The cabinet is packed full of retro video games, Alex enjoys collecting.",
   },
 };
 
-const cabinateRightBottom: CollisionObject = {
+const cabinetRightBottom: CollisionObject = {
   x: 633,
   y: 258,
   width: 25,
@@ -223,7 +223,7 @@ const cabinateRightBottom: CollisionObject = {
   },
 };
 
-const cabinateLeftTop: CollisionObject = {
+const cabinetLeftTop: CollisionObject = {
   x: 49,
   y: 385,
   width: 25,
@@ -234,11 +234,11 @@ const cabinateLeftTop: CollisionObject = {
     modalType: null,
     cvSection: null,
     textBoxHeader: null,
-    textBoxContent: "The cabinate contains some of Alex's favourite films.",
+    textBoxContent: "The cabinet contains some of Alex's favourite films.",
   },
 };
 
-const cabinateLeftBottom: CollisionObject = {
+const cabinetLeftBottom: CollisionObject = {
   x: 49,
   y: 321,
   width: 25,
@@ -250,7 +250,7 @@ const cabinateLeftBottom: CollisionObject = {
     cvSection: null,
     textBoxHeader: null,
     textBoxContent:
-      "The cabinate contains some photos of alex's friends and family.",
+      "The cabinet contains some photos of alex's friends and family.",
   },
 };
 
@@ -267,8 +267,8 @@ export const alexHouseInteractionObjects = [
   sink,
   worktopFish,
   beerKeg,
-  cabinateRightTop,
-  cabinateRightBottom,
-  cabinateLeftTop,
-  cabinateLeftBottom,
+  cabinetRightTop,
+  cabinetRightBottom,
+  cabinetLeftTop,
+  cabinetLeftBottom,
 ];

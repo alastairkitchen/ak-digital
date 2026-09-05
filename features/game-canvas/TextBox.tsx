@@ -14,7 +14,7 @@ import {
   textBoxModalSelector,
 } from "../../store/appSlice";
 import { Box, Button, Flex, Icon, Text } from "@chakra-ui/react";
-import { IoCaretDownSharp } from "react-icons/io5";
+import { IoCaretDownSharp, IoCaretUpSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { useOpenDirectModal } from "../redux-modals/useOpenModal";
 import { useEffect, useRef } from "react";
@@ -61,6 +61,7 @@ export const TextBox = () => {
   const startGameButtonRef = useRef<HTMLButtonElement>(null);
   const yesButtonRef = useRef<HTMLButtonElement>(null);
   const noButtonRef = useRef<HTMLButtonElement>(null);
+  const previousButtonRef = useRef<HTMLButtonElement>(null);
   const stepRef = useRef<TextBoxStep>(step);
 
   // One ref per step, so a single effect can focus whichever is active.
@@ -75,7 +76,8 @@ export const TextBox = () => {
   };
 
   useEffect(() => {
-    if (!textBoxIsOpen) return;
+    if (!textBoxIsOpen || step === "start") return;
+
     stepFocusRef[step].current?.focus();
   }, [textBoxIsOpen, step]);
 
@@ -88,6 +90,12 @@ export const TextBox = () => {
       if (stepRef.current === "advance") {
         if (e.key === "ArrowDown" || e.key.toLowerCase() === "s") {
           continueButtonRef.current?.click();
+        }
+      }
+
+      if (stepRef.current === "start") {
+        if (e.key === "ArrowUp" || e.key.toLowerCase() === "w") {
+          previousButtonRef.current?.click();
         }
       }
 
@@ -127,6 +135,11 @@ export const TextBox = () => {
     dispatch(setTextBoxCurrentChunkIndex(currentChunkIndex + 1));
   };
 
+  const handlePreviousChunk = () => {
+    if (currentChunkIndex === 0) return;
+    dispatch(setTextBoxCurrentChunkIndex(currentChunkIndex - 1));
+  };
+
   const handleOpenModal = () => {
     if (textBoxModal) {
       openModal(textBoxModal);
@@ -161,14 +174,16 @@ export const TextBox = () => {
       border="3px solid black"
       color="black"
       padding="10px"
+      paddingRight="45px"
     >
       {step === "start" && (
         <Button
           ref={startGameButtonRef}
           position="absolute"
-          bottom="5px"
-          right="5px"
+          top="-10px"
+          right="0"
           height="30px"
+          transform="translateY(-100%)"
           px={3}
           _focus={{ bg: "#d0a207" }}
           onClick={stepAction.start}
@@ -177,29 +192,63 @@ export const TextBox = () => {
         </Button>
       )}
 
-      {(step === "advance" || step === "close") && (
-        <Button
-          ref={continueButtonRef}
-          position="absolute"
-          bottom="5px"
-          right="5px"
-          width="30px"
-          height="30px"
-          minW="0"
-          p={0}
-          _focus={{ bg: "#d0a207" }}
-          onClick={stepAction[step]}
-        >
-          <Icon>
-            <IoCaretDownSharp size="20px" />
-          </Icon>
-        </Button>
-      )}
+      <Button
+        ref={continueButtonRef}
+        position="absolute"
+        bottom="5px"
+        right="5px"
+        width="30px"
+        height="30px"
+        minW="0"
+        p={0}
+        bg="#d0a207"
+        onClick={stepAction[step]}
+        opacity={isLastChunk ? 0.3 : 1}
+      >
+        <Icon>
+          <IoCaretDownSharp size="20px" />
+        </Icon>
+      </Button>
+
+      <Button
+        ref={previousButtonRef}
+        aria-label="Previous message"
+        position="absolute"
+        bottom="40px"
+        right="5px"
+        width="30px"
+        height="30px"
+        minW="0"
+        p={0}
+        bg="#d0a207"
+        onClick={handlePreviousChunk}
+        opacity={currentChunkIndex > 0 ? 1 : 0.3}
+      >
+        <Icon>
+          <IoCaretUpSharp size="20px" />
+        </Icon>
+      </Button>
 
       {textChunks.length === 1 ? (
         <Text>{textChunks[0]}</Text>
       ) : (
         <Text>{textChunks[currentChunkIndex]}</Text>
+      )}
+
+      {step === "close" && (
+        <Button
+          onClick={handleCloseTextBox}
+          top="-10px"
+          position="absolute"
+          transform="translateY(-100%)"
+          right="0"
+          minW="0"
+          p={0}
+          width="60px"
+          bg="#d0a207"
+        >
+          Close
+        </Button>
       )}
 
       {step === "confirm" && <Text mt={2}>Read more?</Text>}

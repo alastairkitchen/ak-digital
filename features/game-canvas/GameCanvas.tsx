@@ -22,7 +22,7 @@ export const GameCanvas: React.FC = () => {
 
   useEffect(() => {
     const INTRO_MESSAGE =
-      "Welcome to my interactive CV game! Use the keyboard to control the player and interact with the world to find all of the CV sections. Once you have found all 5 collect a special prize on ali's pc.";
+      "Hi my name is Ali, welcome to my interactive CV game! Use the keyboard to control the player and interact with the world to find all of the CV sections. Go explore my house or check out my friend Alex's house. Once you have found all 5 collect a special prize on my pc.";
 
     dispatch(
       openIntroTextBox({

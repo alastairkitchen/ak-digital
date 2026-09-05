@@ -1,6 +1,6 @@
 import { CvSection, ModalType } from "@/store/appSlice";
 
-const CHARACTER_LIMIT = 160;
+const CHARACTER_LIMIT = 250;
 
 const congratulationsMessage =
   "Congratulations you found your first section of the CV, find all sections then check ali's computer to collect your prize!";

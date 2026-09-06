@@ -110,5 +110,5 @@ export const useSetupCanvas = () => {
     };
   }, [debugInteraction, rect, images]);
 
-  return { canvasRef, rect };
+  return { canvasRef, rect, keysRef };
 };

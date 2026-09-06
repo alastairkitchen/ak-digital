@@ -6,6 +6,7 @@ import { CANVAS_HEIGHT, CANVAS_WIDTH } from "./const";
 import { Box } from "@chakra-ui/react";
 import { TextBox } from "./TextBox";
 import { ProgressBanner } from "./ProgressBanner";
+import { MobileControls } from "./MobileControls";
 import { useDispatch, useSelector } from "react-redux";
 import {
   gameModeSelector,
@@ -15,7 +16,7 @@ import {
 
 export const GameCanvas: React.FC = () => {
   const dispatch = useDispatch();
-  const { canvasRef, rect } = useSetupCanvas();
+  const { canvasRef, rect, keysRef } = useSetupCanvas();
   const [update, setUpdate] = useState(true);
   const gameMode = useSelector(gameModeSelector);
   const introIsOpen = useSelector(introIsOpenSelector);
@@ -30,6 +31,10 @@ export const GameCanvas: React.FC = () => {
         content: INTRO_MESSAGE,
       }),
     );
+
+    if (canvasRef.current) {
+      canvasRef.current.style.width = "100%";
+    }
   }, []);
 
   return (
@@ -48,7 +53,8 @@ export const GameCanvas: React.FC = () => {
 
       <Box
         tabIndex={0}
-        width={CANVAS_WIDTH}
+        width="100%"
+        maxWidth={CANVAS_WIDTH}
         position="relative"
         border="1px solid"
         borderColor="whiteAlpha.500"
@@ -56,22 +62,25 @@ export const GameCanvas: React.FC = () => {
         borderRadius="md"
         mb={10}
       >
-        <canvas
-          ref={canvasRef}
-          height={CANVAS_HEIGHT}
-          width={CANVAS_WIDTH}
-          style={{
-            filter: introIsOpen ? "blur(3px)" : "none",
-            transition: "filter 0.3s ease",
-          }}
-        ></canvas>
+        <Box position="relative">
+          <canvas
+            ref={canvasRef}
+            height={CANVAS_HEIGHT}
+            width={CANVAS_WIDTH}
+            style={{
+              filter: introIsOpen ? "blur(3px)" : "none",
+              transition: "filter 0.3s ease",
+            }}
+          ></canvas>
 
-        <TextBox />
-        <ProgressBanner
-          inert={gameMode === "text-box"}
-          filter={introIsOpen ? "blur(3px)" : "none"}
-          transition="filter 0.3s ease"
-        />
+          <TextBox />
+          <ProgressBanner
+            inert={gameMode === "text-box"}
+            filter={introIsOpen ? "blur(3px)" : "none"}
+            transition="filter 0.3s ease"
+          />
+        </Box>
+        <MobileControls keysRef={keysRef} />
       </Box>
     </>
   );

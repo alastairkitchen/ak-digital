@@ -1,5 +1,5 @@
 "use client";
-import { Box, Button, Heading, Link, Text } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import { GameCanvas } from "../features/game-canvas/GameCanvas";
 import { ReduxModalsContainer } from "../features/redux-modals/ReduxModalsContainer";
 import {
@@ -30,7 +30,7 @@ export default function Home() {
 
           <GameCanvas />
 
-          <Box inert={gameMode === "text-box"}>
+          {/* <Box inert={gameMode === "text-box"}>
             <Button onClick={() => openCVSummaryModal()}>Summary</Button>
             <Button onClick={() => openSkillsModal()}>Technical Skills</Button>
             <Button onClick={() => openModal("experience")}>Experience</Button>
@@ -39,7 +39,7 @@ export default function Home() {
             <Text>
               Alternaitavely <Link>Download cv as PDF</Link>
             </Text>
-          </Box>
+          </Box> */}
         </Box>
       </main>
       <ReduxModalsContainer />

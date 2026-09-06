@@ -1,61 +1,34 @@
 import {
-  closeTextBox,
-  congratsMessageShownSelector,
-  cvProgressSelector,
-  introIsOpenSelector,
-  ModalType,
-  setCongratsMessageShown,
-  setTextBoxCurrentChunkIndex,
+  advanceTextBox,
+  dismissTextBox,
+  retreatTextBoxChunk,
+  setTextBoxConfirmSelection,
   startGame,
+  TextBoxStep,
+  textBoxChunksSelector,
+  textBoxConfirmSelectionSelector,
   textBoxContentSelector,
   textBoxCurrentChunkIndexSelector,
-  textBoxHeaderSelector,
   textBoxIsOpenSelector,
-  textBoxModalSelector,
+  textBoxStepSelector,
 } from "../../store/appSlice";
 import { Box, Button, Flex, Icon, Text } from "@chakra-ui/react";
 import { IoCaretDownSharp, IoCaretUpSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { useOpenDirectModal } from "../redux-modals/useOpenModal";
 import { useEffect, useRef } from "react";
-import { chunkText } from "./utils/chunkText";
-
-type TextBoxStep = "advance" | "close" | "confirm" | "start";
-
-const getTextBoxStep = (
-  isLastChunk: boolean,
-  introIsOpen: boolean,
-  textBoxModal: ModalType | null,
-): TextBoxStep => {
-  if (!isLastChunk) return "advance";
-  if (introIsOpen) return "start";
-  if (textBoxModal !== null) return "confirm";
-  return "close";
-};
+import { AppDispatch } from "../../store";
 
 export const TextBox = () => {
-  const dispatch = useDispatch();
-  const { openModal } = useOpenDirectModal();
+  const dispatch = useDispatch<AppDispatch>();
 
   const textBoxIsOpen = useSelector(textBoxIsOpenSelector);
-  const textBoxHeader = useSelector(textBoxHeaderSelector);
   const textBoxContent = useSelector(textBoxContentSelector);
-  const textBoxModal = useSelector(textBoxModalSelector);
-  const cvProgress = useSelector(cvProgressSelector);
-  const congratsMessageShown = useSelector(congratsMessageShownSelector);
   const currentChunkIndex = useSelector(textBoxCurrentChunkIndexSelector);
-  const introIsOpen = useSelector(introIsOpenSelector);
-
-  const textChunks = chunkText(
-    textBoxHeader || "",
-    textBoxContent || "",
-    cvProgress,
-    congratsMessageShown,
-    textBoxModal,
-  );
+  const textChunks = useSelector(textBoxChunksSelector);
+  const step = useSelector(textBoxStepSelector);
+  const confirmSelection = useSelector(textBoxConfirmSelectionSelector);
 
   const isLastChunk = currentChunkIndex + 1 >= textChunks.length;
-  const step = getTextBoxStep(isLastChunk, introIsOpen, textBoxModal);
 
   const continueButtonRef = useRef<HTMLButtonElement>(null);
   const startGameButtonRef = useRef<HTMLButtonElement>(null);
@@ -64,22 +37,18 @@ export const TextBox = () => {
   const previousButtonRef = useRef<HTMLButtonElement>(null);
   const stepRef = useRef<TextBoxStep>(step);
 
-  // One ref per step, so a single effect can focus whichever is active.
-  const stepFocusRef: Record<
-    TextBoxStep,
-    React.RefObject<HTMLButtonElement | null>
-  > = {
-    advance: continueButtonRef,
-    close: continueButtonRef,
-    start: startGameButtonRef,
-    confirm: yesButtonRef,
-  };
-
   useEffect(() => {
-    if (!textBoxIsOpen || step === "start") return;
+    if (!textBoxIsOpen) return;
 
-    stepFocusRef[step].current?.focus();
-  }, [textBoxIsOpen, step]);
+    if (step === "confirm") {
+      (confirmSelection === "no" ? noButtonRef : yesButtonRef).current?.focus();
+      return;
+    }
+
+    if (step === "advance" || step === "close") {
+      continueButtonRef.current?.focus();
+    }
+  }, [textBoxIsOpen, step, confirmSelection]);
 
   useEffect(() => {
     stepRef.current = step;
@@ -89,29 +58,22 @@ export const TextBox = () => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (stepRef.current === "advance") {
         if (e.key === "ArrowDown" || e.key.toLowerCase() === "s") {
-          continueButtonRef.current?.click();
+          dispatch(advanceTextBox());
         }
       }
 
       if (stepRef.current === "start") {
         if (e.key === "ArrowUp" || e.key.toLowerCase() === "w") {
-          previousButtonRef.current?.click();
+          dispatch(retreatTextBoxChunk());
         }
       }
 
       if (stepRef.current === "confirm") {
-        const activeElement = document.activeElement as HTMLElement;
-        const activeElementFocusId = activeElement?.dataset?.focusElementId;
-
         if (e.key === "ArrowUp" || e.key.toLowerCase() === "w") {
-          if (activeElementFocusId === "no-button") {
-            yesButtonRef.current?.focus();
-          }
+          dispatch(setTextBoxConfirmSelection("yes"));
         }
         if (e.key === "ArrowDown" || e.key.toLowerCase() === "s") {
-          if (activeElementFocusId === "yes-button") {
-            noButtonRef.current?.focus();
-          }
+          dispatch(setTextBoxConfirmSelection("no"));
         }
       }
     };
@@ -121,41 +83,7 @@ export const TextBox = () => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
-
-  const handleCloseTextBox = () => {
-    dispatch(closeTextBox());
-
-    if (!congratsMessageShown && textBoxModal !== null) {
-      dispatch(setCongratsMessageShown());
-    }
-  };
-
-  const handleNextChunk = () => {
-    dispatch(setTextBoxCurrentChunkIndex(currentChunkIndex + 1));
-  };
-
-  const handlePreviousChunk = () => {
-    if (currentChunkIndex === 0) return;
-    dispatch(setTextBoxCurrentChunkIndex(currentChunkIndex - 1));
-  };
-
-  const handleOpenModal = () => {
-    if (textBoxModal) {
-      openModal(textBoxModal);
-    }
-  };
-
-  const handleStartGame = () => {
-    dispatch(startGame());
-  };
-
-  const stepAction: Record<TextBoxStep, () => void> = {
-    advance: handleNextChunk,
-    close: handleCloseTextBox,
-    confirm: handleOpenModal,
-    start: handleStartGame,
-  };
+  }, [dispatch]);
 
   if (!textBoxIsOpen || !textBoxContent) {
     return null;
@@ -186,7 +114,7 @@ export const TextBox = () => {
           transform="translateY(-100%)"
           px={3}
           _focus={{ bg: "#d0a207" }}
-          onClick={stepAction.start}
+          onClick={() => dispatch(startGame())}
         >
           Start Game
         </Button>
@@ -202,7 +130,7 @@ export const TextBox = () => {
         minW="0"
         p={0}
         bg="#d0a207"
-        onClick={stepAction[step]}
+        onClick={() => dispatch(advanceTextBox())}
         opacity={isLastChunk ? 0.3 : 1}
       >
         <Icon>
@@ -221,7 +149,7 @@ export const TextBox = () => {
         minW="0"
         p={0}
         bg="#d0a207"
-        onClick={handlePreviousChunk}
+        onClick={() => dispatch(retreatTextBoxChunk())}
         opacity={currentChunkIndex > 0 ? 1 : 0.3}
       >
         <Icon>
@@ -237,7 +165,7 @@ export const TextBox = () => {
 
       {step === "close" && (
         <Button
-          onClick={handleCloseTextBox}
+          onClick={() => dispatch(dismissTextBox())}
           top="-10px"
           position="absolute"
           transform="translateY(-100%)"
@@ -269,7 +197,7 @@ export const TextBox = () => {
           <Button
             ref={yesButtonRef}
             data-focus-element-id="yes-button"
-            onClick={handleOpenModal}
+            onClick={() => dispatch(advanceTextBox())}
             minW="0"
             p={0}
             width="100%"
@@ -281,7 +209,7 @@ export const TextBox = () => {
           <Button
             ref={noButtonRef}
             data-focus-element-id="no-button"
-            onClick={handleCloseTextBox}
+            onClick={() => dispatch(dismissTextBox())}
             minW="0"
             p={0}
             width="100%"
